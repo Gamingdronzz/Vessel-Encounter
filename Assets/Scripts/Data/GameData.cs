@@ -12,7 +12,7 @@ namespace VesselEncounter.Data
         public Room CurrentRoom;
         public byte MaxPlayers;
         public int PlayerLevel = 26;
-        public GameLevelBrackets RoomLevel;
+        public GameLevelBrackets MinimumSkillLevel;
         public RoomOptions roomOptions;
 
         public int MatchWaitTime { get; internal set; }
@@ -24,17 +24,17 @@ namespace VesselEncounter.Data
         public void UpdateRoomLevel()
         {
             if (PlayerLevel <= 10)
-                RoomLevel = GameLevelBrackets.Ten;
+                MinimumSkillLevel = GameLevelBrackets.One_Ten;
             else if (PlayerLevel <= 25)
-                RoomLevel = GameLevelBrackets.TwentyFive;
+                MinimumSkillLevel = GameLevelBrackets.Eleven_TwentyFive;
             else if (PlayerLevel <= 50)
-                RoomLevel = GameLevelBrackets.Fifty;
+                MinimumSkillLevel = GameLevelBrackets.TwentySix_Fifty;
             else if (PlayerLevel <= 100)
-                RoomLevel = GameLevelBrackets.Hundred;
+                MinimumSkillLevel = GameLevelBrackets.FiftyOne_Hundred;
             else if (PlayerLevel <= 250)
-                RoomLevel = GameLevelBrackets.TwoFifty;
+                MinimumSkillLevel = GameLevelBrackets.HundredOne_TwoFifty;
             else
-                RoomLevel = GameLevelBrackets.FiveHundred;
+                MinimumSkillLevel = GameLevelBrackets.TwoFiftyOne_FiveHundred;
         }
     }
 }

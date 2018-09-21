@@ -762,7 +762,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Log: {fileID: 1199504586}
-  parentTransform: {fileID: 0}
+  parentTransform: {fileID: 1944103518}
 --- !u!114 &991833956
 MonoBehaviour:
   m_ObjectHideFlags: 0

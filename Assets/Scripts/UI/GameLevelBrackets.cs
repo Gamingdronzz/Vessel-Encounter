@@ -6,11 +6,11 @@ namespace VesselEncounter
 {
     public enum GameLevelBrackets
     {
-        Ten = 1,
-        TwentyFive,
-        Fifty,
-        Hundred,
-        TwoFifty,
-        FiveHundred,
+        One_Ten = 1,
+        Eleven_TwentyFive,
+        TwentySix_Fifty,
+        FiftyOne_Hundred,
+        HundredOne_TwoFifty,
+        TwoFiftyOne_FiveHundred,
     }
 }
