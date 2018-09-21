@@ -62,7 +62,7 @@ namespace VesselEncounter
             keyValuePairs.Add(RoomPropertyKeys.Key_SkillLevel, GameData.Instance.MinimumSkillLevel);
             keyValuePairs.Add(RoomPropertyKeys.Key_MatchWaitTime, GameData.Instance.MatchWaitTime);
             keyValuePairs.Add(RoomPropertyKeys.Key_RoomCreateTime, PhotonNetwork.ServerTimestamp);
-            XDebug.Log("Room Create Time = " + keyValuePairs[RoomPropertyKeys.Key_RoomCreateTime], XDebug.Mask.GameManager, XDebug.Color.Red);
+            XDebug.Log("Room Create Time if I create room = " + keyValuePairs[RoomPropertyKeys.Key_RoomCreateTime], XDebug.Mask.GameManager, XDebug.Color.Red);
             GameData.Instance.roomOptions = DefaultRoomOptions(keyValuePairs);
             //keyValuePairs.Add("ServerTimeStamp", PhotonNetwork.Time);
             //keyValuePairs.Add("delayTime", time);
@@ -177,6 +177,7 @@ namespace VesselEncounter
             if (room != null)
             {
                 XDebug.Log("On Join Room - " + room.Name + "Skill Level = " + room.CustomProperties[RoomPropertyKeys.Key_SkillLevel], XDebug.Mask.GameManager, null);
+                XDebug.Log("Joined Room Creation Time - " + (int)room.CustomProperties[RoomPropertyKeys.Key_RoomCreateTime], XDebug.Mask.GameManager, null);
                 GameData.Instance.CurrentRoom = room;
                 GameData.Instance.MatchWaitTime = (int)room.CustomProperties[RoomPropertyKeys.Key_MatchWaitTime];
                 SceneManager.Instance.LoadScene(SceneManager.Scene.Game, UnityEngine.SceneManagement.LoadSceneMode.Single);
@@ -271,10 +272,14 @@ namespace VesselEncounter
         //    XDebug.Log("On Left Room", XDebug.Mask.GameManager, null);
         //}
 
-        //void IInRoomCallbacks.OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+        {
+            XDebug.Log("Room Properties Update", XDebug.Mask.GameManager, XDebug.Color.Yellow);
+            if (propertiesThatChanged.ContainsKey(RoomPropertyKeys.Key_RoomCreateTime))
+            {
+                GameData.Instance.MatchWaitTime = (PhotonNetwork.ServerTimestamp - ((int)(propertiesThatChanged[RoomPropertyKeys.Key_RoomCreateTime]) / 1000));
+            }
+        }
 
         //void IInRoomCallbacks.OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
         //{

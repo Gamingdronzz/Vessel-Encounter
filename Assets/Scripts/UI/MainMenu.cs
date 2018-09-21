@@ -40,8 +40,8 @@ namespace VesselEncounter.UI.MainMenu
         private void OnRegionSelected(int index)
         {
             string Region = NetworkData.Instance.GetRegionList()[index].Code;
-            PhotonNetwork.Disconnect();
-            PhotonNetwork.ConnectToRegion(Region);
+            //PhotonNetwork.Disconnect();
+            //PhotonNetwork.ConnectToRegion(Region);
             XDebug.Log("Connecting to - " + Region);
         }
 

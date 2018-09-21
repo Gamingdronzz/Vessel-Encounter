@@ -18,9 +18,7 @@ namespace VesselEncounter.Game
         private void Start()
         {
             int countdownValue = GameData.Instance.MatchWaitTime;
-            int TimePassedSinceRoomCreation = PhotonNetwork.ServerTimestamp;
-            XDebug.Log("Room Join Time = " + TimePassedSinceRoomCreation);
-
+            XDebug.Log("New Wait Time = " + countdownValue);
             if (TxtTimer != null)
                 StartCoroutine(StartCountdown(countdownValue));
         }
