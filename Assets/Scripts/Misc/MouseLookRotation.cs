@@ -122,9 +122,7 @@ public class MouseLookRotation : MonoBehaviour
             transform.localRotation = originalRotation * yQuaternion;
         }
     }
-
-   
-
+    
     public static float ClampAngle(float angle, float min, float max)
     {
         angle = angle % 360;

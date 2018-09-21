@@ -15,7 +15,8 @@ namespace VesselEncounter
             GameManager,
             ConnectivityMonitor,
             SceneManager,
-            MatchList
+            MatchList,
+            NetworkData
         }
 
         //Add Color Names here, should be same as colors defined in Color Class

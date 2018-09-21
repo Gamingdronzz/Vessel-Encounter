@@ -107,7 +107,6 @@ namespace VesselEncounter
         {
             base.OnConnected();
             XDebug.Log("On Connected", XDebug.Mask.GameManager, null);
-            PhotonNetwork.NickName = "Player - " + Random.Range(0, 9999);
         }
 
         public override void OnCreateRoomFailed(short returnCode, string message)
@@ -193,6 +192,9 @@ namespace VesselEncounter
         public override void OnConnectedToMaster()
         {
             XDebug.Log("On Connected to master", XDebug.Mask.GameManager, null);
+            PhotonNetwork.NickName = "Player - " + Random.Range(0, 9999);
+            NetworkData.Instance.BestRegion = PhotonNetwork.NetworkingClient.RegionHandler.BestRegion;
+            NetworkData.Instance.OnConnectedToBestRegion();
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -233,6 +235,13 @@ namespace VesselEncounter
         public override void OnRegionListReceived(RegionHandler regionHandler)
         {
             base.OnRegionListReceived(regionHandler);
+            NetworkData.Instance.UpdateRegionList(regionHandler.EnabledRegions);
+
+            foreach (Region region in regionHandler.EnabledRegions)
+            {
+                XDebug.Log("Region Code = " + region.Code, XDebug.Mask.GameManager, XDebug.Color.Cyan);
+                XDebug.Log("Region Ping = " + region.Ping, XDebug.Mask.GameManager, XDebug.Color.Red);
+            }
         }
 
         public override void OnCustomAuthenticationResponse(Dictionary<string, object> data)

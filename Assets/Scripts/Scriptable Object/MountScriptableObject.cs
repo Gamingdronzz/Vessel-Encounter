@@ -1,13 +1,42 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
-[CreateAssetMenu(fileName ="Create Mountable Item", menuName ="Mount Item")]
+[CreateAssetMenu(fileName ="Mountable Item", menuName ="Create Mount Item")]
 public class MountScriptableObject : ScriptableObject
 {
+    [Header("Mandatory")]
     public string MountName;
     public int MountID;
-    public GameObject MountGameObject;
+    public ItemType ItemType;
+    public RawImage ItemImage;
+    public GameObject MountGO;
+    public GameObject UnMountGO;
+    public int Quantity;
+    public bool IsStackable;
+    public int InventorySpace;
+
+    [Header("Weapon Parameters")]
+    public float FireRate;
+    public float ReloadTime;
+    public AmmoType AmmoType;
+    public int MagazineClipLimit;
+
+    [Header("Mount Position Optional")]
     public MountPosition MountPosition;
     public MountPriority MountPriority;
+}
+
+public enum ItemType
+{
+    Item = 1,
+    Weapon = 2,
+    Ammo = 3
+}
+
+public enum AmmoType
+{
+    Bullet,
+    Rocket
 }
 
 public enum MountPriority
