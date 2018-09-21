@@ -4,6 +4,7 @@ using TMPro;
 using ExitGames.Client.Photon;
 using System.Collections;
 using Photon.Pun;
+using VesselEncounter.Data;
 
 namespace VesselEncounter.Game
 {
@@ -16,7 +17,9 @@ namespace VesselEncounter.Game
         // Use this for initialization
         private void Start()
         {
-            int countdownValue = 30;
+            int countdownValue = GameData.Instance.MatchWaitTime;
+            int TimePassedSinceRoomCreation = PhotonNetwork.ServerTimestamp;
+            XDebug.Log("Room Join Time = " + TimePassedSinceRoomCreation);
 
             if (TxtTimer != null)
                 StartCoroutine(StartCountdown(countdownValue));

@@ -60,6 +60,9 @@ namespace VesselEncounter
         {
             Hashtable keyValuePairs = new Hashtable();
             keyValuePairs.Add(RoomPropertyKeys.Key_SkillLevel, GameData.Instance.MinimumSkillLevel);
+            keyValuePairs.Add(RoomPropertyKeys.Key_MatchWaitTime, GameData.Instance.MatchWaitTime);
+            keyValuePairs.Add(RoomPropertyKeys.Key_RoomCreateTime, PhotonNetwork.ServerTimestamp);
+            XDebug.Log("Room Create Time = " + keyValuePairs[RoomPropertyKeys.Key_RoomCreateTime], XDebug.Mask.GameManager, XDebug.Color.Red);
             GameData.Instance.roomOptions = DefaultRoomOptions(keyValuePairs);
             //keyValuePairs.Add("ServerTimeStamp", PhotonNetwork.Time);
             //keyValuePairs.Add("delayTime", time);
@@ -116,7 +119,7 @@ namespace VesselEncounter
 
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
-            XDebug.Log("Random Room Failed code = " + returnCode + " message = " + message, XDebug.Mask.GameManager, XDebug.Color.Red);
+            //XDebug.Log("Random Room Failed code = " + returnCode + " message = " + message, XDebug.Mask.GameManager, XDebug.Color.Red);
             if (PhotonNetwork.CountOfRooms < 2)
             {
                 PhotonNetwork.CreateRoom("", GameData.Instance.roomOptions, null, null);
@@ -125,7 +128,7 @@ namespace VesselEncounter
             {
                 if (returnCode == (int)JoinRoomFailCode.NoMatchFound)
                 {
-                    XDebug.Log("Current Room Level = " + GameData.Instance.MinimumSkillLevel.ToString(), XDebug.Mask.GameManager, XDebug.Color.Yellow);
+                    //XDebug.Log("Current Room Level = " + GameData.Instance.MinimumSkillLevel.ToString(), XDebug.Mask.GameManager, XDebug.Color.Yellow);
                     if (GameData.Instance.MinimumSkillLevel != GameLevelBrackets.One_Ten)
                     {
                         Hashtable keyValuePairs = new Hashtable();
@@ -152,6 +155,7 @@ namespace VesselEncounter
             Room room = PhotonNetwork.CurrentRoom;
             if (room != null)
             {
+                GameData.Instance.MatchWaitTime = (int)room.CustomProperties[RoomPropertyKeys.Key_MatchWaitTime];
                 RuntimeDebug.Instance.AddLog("On Create Room " + room.Name);
                 RuntimeDebug.Instance.AddLog("max Players = " + room.MaxPlayers);
             }
@@ -174,7 +178,7 @@ namespace VesselEncounter
             {
                 XDebug.Log("On Join Room - " + room.Name + "Skill Level = " + room.CustomProperties[RoomPropertyKeys.Key_SkillLevel], XDebug.Mask.GameManager, null);
                 GameData.Instance.CurrentRoom = room;
-
+                GameData.Instance.MatchWaitTime = (int)room.CustomProperties[RoomPropertyKeys.Key_MatchWaitTime];
                 SceneManager.Instance.LoadScene(SceneManager.Scene.Game, UnityEngine.SceneManagement.LoadSceneMode.Single);
             }
         }
