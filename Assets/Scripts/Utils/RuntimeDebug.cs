@@ -8,10 +8,12 @@ namespace VesselEncounter
     public class RuntimeDebug : SingletonMonoBehaviour<RuntimeDebug>
     {
         public TextMeshProUGUI Log;
+        public Transform parentTransform;
 
         public void AddLog(string message)
         {
-            Log.text += "\n" + message;
+            Log.text = message;
+            Instantiate(Log, parentTransform);
         }
     }
 }

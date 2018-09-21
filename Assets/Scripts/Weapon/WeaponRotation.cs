@@ -4,17 +4,32 @@ using UnityEngine;
 
 public class WeaponRotation : MonoBehaviour
 {
-    GameObject CameraGo;
+    public float frameCounter = 20;
 
-	// Use this for initialization
-	void Start ()
-    {
-        CameraGo = GameObject.Find("Main Camera");
-	}
+    private Quaternion m_From;
+    private Quaternion m_To;
 
-    // Update is called once per frame
-    void Update()
+    private Transform m_CameraGameObject;
+
+    private float timeCount = 0.0f;
+
+    private void Awake()
     {
-        transform.LookAt(Camera.main.ScreenToViewportPoint(Input.mousePosition));
-	}
+        m_CameraGameObject = GameObject.Find("Main_Camera").transform;
+    }
+
+    void Start()
+    {
+        m_From = transform.localRotation;
+    }
+
+    private void LateUpdate()
+    {
+        m_To = m_CameraGameObject.rotation;
+        m_To.x = 0.0f;
+        m_To.z = 0.0f;
+
+        transform.localRotation = Quaternion.Slerp(m_From, m_To, timeCount);
+        timeCount += Time.deltaTime;
+    }
 }

@@ -2,13 +2,14 @@
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine;
+using VesselEncounter.Data;
 
 namespace VesselEncounter
 {
     public class GameManager : SingletonMonoBehavourPUNCallbacks<GameManager>
     {
         private const string m_GameVersion = "v1";
-        private int counter = 1;
 
         private void Awake()
         {
@@ -48,76 +49,100 @@ namespace VesselEncounter
                 PhotonNetwork.GameVersion = m_GameVersion;
                 PhotonNetwork.ConnectUsingSettings();
                 XDebug.Log("Connected", null, XDebug.Color.Green);
-                RuntimeDebug.Instance.AddLog("Connected");
             }
             else
             {
                 XDebug.Log("Not Connected", null, XDebug.Color.Red);
-                RuntimeDebug.Instance.AddLog("Not Connected");
             }
         }
 
-        public void CreateOrJoinRoom(int time, byte maxPlayers)
+        public void CreateOrJoinRoom()
+        {
+            Hashtable keyValuePairs = new Hashtable();
+            keyValuePairs.Add(RoomPropertyKeys.Key_SkillLevel, GameData.Instance.RoomLevel);
+            GameData.Instance.roomOptions = DefaultRoomOptions(keyValuePairs);
+            //keyValuePairs.Add("ServerTimeStamp", PhotonNetwork.Time);
+            //keyValuePairs.Add("delayTime", time);
+            //PhotonNetwork.JoinOrCreateRoom("Default Room-" + counter, roomOptions, TypedLobby.Default);
+            if (PhotonNetwork.IsConnectedAndReady)
+            {
+                GameData.Instance.PlayerLevel = Random.Range(1, 100);
+                GameData.Instance.UpdateRoomLevel();
+                XDebug.Log("Room Count = " + PhotonNetwork.CountOfRooms + "\nInitial Room Level = " + GameData.Instance.RoomLevel + "\nPlayer Level = " + GameData.Instance.PlayerLevel);
+                if (PhotonNetwork.CountOfRooms < 2)
+                {
+                    XDebug.Log("First Condition");
+                    PhotonNetwork.JoinRandomRoom();
+                }
+                else
+                {
+                    XDebug.Log("Else Condition");
+                    JoinRandom();
+                }
+            }
+            else
+            {
+                RuntimeDebug.Instance.AddLog("Not Ready to join yet");
+            }
+        }
+
+        private void JoinRandom()
+        {
+            PhotonNetwork.JoinRandomRoom(GameData.Instance.roomOptions.CustomRoomProperties, GameData.Instance.MaxPlayers);
+        }
+
+        private RoomOptions DefaultRoomOptions(Hashtable keyValuePairs)
         {
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.IsOpen = true;
             roomOptions.IsVisible = true;
-            roomOptions.MaxPlayers = maxPlayers;
+            roomOptions.MaxPlayers = GameData.Instance.MaxPlayers;
             roomOptions.PublishUserId = true;
-            Hashtable keyValuePairs = new Hashtable();
-            //keyValuePairs.Add("ServerTimeStamp", PhotonNetwork.Time);
-            //keyValuePairs.Add("delayTime", time);
-
-            //PhotonNetwork.JoinOrCreateRoom("Default Room-" + counter, roomOptions, TypedLobby.Default);
-
-            if (PhotonNetwork.CountOfRooms < 20)
-            {
-                PhotonNetwork.JoinRandomRoom();
-            }
-            else
-            {
-                int level = 1;
-                if (GameData.Instance.PlayerLevel >= 2)
-                {
-                    level = 2;
-                }
-                else if (GameData.Instance.PlayerLevel >= 1)
-                {
-                    level = 1;
-                }
-                GameData.Instance.RoomLevel = level;
-                keyValuePairs.Add("minimum-skill-level", level);
-
-                roomOptions.CustomRoomPropertiesForLobby = new string[] { "minimum-skill-level" };
-                roomOptions.CustomRoomProperties = keyValuePairs;
-                GameData.Instance.roomOptions = roomOptions;
-                PhotonNetwork.JoinRandomRoom(keyValuePairs, maxPlayers);
-            }
+            roomOptions.CustomRoomPropertiesForLobby = new string[] { RoomPropertyKeys.Key_SkillLevel };
+            roomOptions.CustomRoomProperties = keyValuePairs;
+            return roomOptions;
         }
 
         public override void OnConnected()
         {
             base.OnConnected();
             XDebug.Log("On Connected", XDebug.Mask.GameManager, null);
-            RuntimeDebug.Instance.AddLog("On Connected");
+            PhotonNetwork.NickName = "Player - " + Random.Range(0, 9999);
         }
-
-        //public override void OnLeftRoom()
-        //{
-        //    base.OnLeftRoom();
-        //    XDebug.Log("On Left Room", XDebug.Mask.GameManager, null);
-        //}
 
         public override void OnCreateRoomFailed(short returnCode, string message)
         {
             XDebug.Log("On Create Room Failed - code = " + returnCode + "\nMessage = " + message, XDebug.Mask.GameManager, XDebug.Color.Red);
-            RuntimeDebug.Instance.AddLog("On Create Room Failed - code = " + returnCode + "\nMessage = " + message);
+        }
+
+        public override void OnJoinRandomFailed(short returnCode, string message)
+        {
+            XDebug.Log("Random Room Failed code = " + returnCode + " message = " + message, XDebug.Mask.GameManager, XDebug.Color.Red);
+            if (PhotonNetwork.CountOfRooms < 2)
+            {
+                PhotonNetwork.CreateRoom("", GameData.Instance.roomOptions, null, null);
+            }
+            else
+            {
+                if (returnCode == (int)JoinRoomFailCode.NoMatchFound)
+                {
+                    XDebug.Log("Current Room Level = " + GameData.Instance.RoomLevel.ToString(), XDebug.Mask.GameManager, XDebug.Color.Yellow);
+                    if (GameData.Instance.RoomLevel != GameLevelBrackets.Ten)
+                    {
+                        Hashtable keyValuePairs = new Hashtable();
+                        keyValuePairs.Add(RoomPropertyKeys.Key_SkillLevel, --GameData.Instance.RoomLevel);
+                        GameData.Instance.roomOptions.CustomRoomProperties = keyValuePairs;
+                        JoinRandom();
+                    }
+                    else
+                        PhotonNetwork.CreateRoom("", GameData.Instance.roomOptions, null, null);
+                }
+            }
         }
 
         public override void OnJoinRoomFailed(short returnCode, string message)
         {
             XDebug.Log("On Join Room Failed - code = " + returnCode + "\nMessage = " + message, XDebug.Mask.GameManager, XDebug.Color.Red);
-            RuntimeDebug.Instance.AddLog("On Join Room Failed - code = " + returnCode + "\nMessage = " + message);
             if (returnCode == (int)JoinRoomFailCode.GameFull)
             {
             }
@@ -127,14 +152,11 @@ namespace VesselEncounter
         {
             Room room = PhotonNetwork.CurrentRoom;
             if (room != null)
-                XDebug.Log("On Create Room " + room.Name + "\nmax Players = " + room.MaxPlayers, XDebug.Mask.GameManager, null);
+            {
+                RuntimeDebug.Instance.AddLog("On Create Room " + room.Name);
+                RuntimeDebug.Instance.AddLog("max Players = " + room.MaxPlayers);
+            }
         }
-
-        //public override void OnLeftLobby()
-        //{
-        //    base.OnLeftLobby();
-        //    XDebug.Log("On Left Lobby", XDebug.Mask.GameManager, null);
-        //}
 
         public override void OnDisconnected(DisconnectCause cause)
         {
@@ -151,9 +173,8 @@ namespace VesselEncounter
             }
             if (room != null)
             {
-                XDebug.Log("On Join Room " + room.Name + "\nmax Players = " + room.MaxPlayers + "Custom = " + room.CustomProperties["minimum-skill-level"], XDebug.Mask.GameManager, null);
-                RuntimeDebug.Instance.AddLog("On Join Room " + room.Name + "\nmax Players = " + room.MaxPlayers + "Custom = " + room.CustomProperties["minimum-skill-level"]);
-                GameData.Instance.currentRoom = room;
+                XDebug.Log("On Join Room " + room.Name + "\nmax Players = " + room.MaxPlayers + "Custom = " + room.CustomProperties[RoomPropertyKeys.Key_SkillLevel], XDebug.Mask.GameManager, null);
+                GameData.Instance.CurrentRoom = room;
 
                 SceneManager.Instance.LoadScene(SceneManager.Scene.Game, UnityEngine.SceneManagement.LoadSceneMode.Single);
             }
@@ -162,12 +183,11 @@ namespace VesselEncounter
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             XDebug.Log("On Player Enter Room - " + newPlayer.NickName, XDebug.Mask.GameManager, XDebug.Color.Green);
-            RuntimeDebug.Instance.AddLog("On Player Enter Room - " + newPlayer.NickName);
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
-            XDebug.Log("On Player Left Room - " + otherPlayer.NickName, XDebug.Mask.GameManager, XDebug.Color.Red);
+            XDebug.Log("On Player Left Room - " + otherPlayer.NickName + "\nTotal Player Count = " + GameData.Instance.CurrentRoom.PlayerCount, XDebug.Mask.GameManager, XDebug.Color.Red);
         }
 
         public override void OnConnectedToMaster()
@@ -200,34 +220,9 @@ namespace VesselEncounter
             XDebug.Log("On Joined Lobby", XDebug.Mask.GameManager, null);
         }
 
-        //void IInRoomCallbacks.OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
-
-        //void IInRoomCallbacks.OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
-
-        //void IInRoomCallbacks.OnMasterClientSwitched(Player newMasterClient)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
-
         public override void OnFriendListUpdate(List<FriendInfo> friendList)
         {
             throw new System.NotImplementedException();
-        }
-
-        public override void OnJoinRandomFailed(short returnCode, string message)
-        {
-            XDebug.Log("Random Room Failed code = " + returnCode + " message = " + message, XDebug.Mask.GameManager, XDebug.Color.Red);
-            if (returnCode == (int)JoinRoomFailCode.NoMatchFound)
-            {
-                if (PhotonNetwork.CountOfRooms > 100)
-                    PhotonNetwork.CreateRoom("", GameData.Instance.roomOptions, null, null);
-            }
         }
 
         public override void OnLeftRoom()
@@ -250,5 +245,32 @@ namespace VesselEncounter
             GameFull = 32765,
             NoMatchFound = 32760,
         }
+
+        //public override void OnLeftLobby()
+        //{
+        //    base.OnLeftLobby();
+        //    XDebug.Log("On Left Lobby", XDebug.Mask.GameManager, null);
+        //}
+
+        //public override void OnLeftRoom()
+        //{
+        //    base.OnLeftRoom();
+        //    XDebug.Log("On Left Room", XDebug.Mask.GameManager, null);
+        //}
+
+        //void IInRoomCallbacks.OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+        //{
+        //    throw new System.NotImplementedException();
+        //}
+
+        //void IInRoomCallbacks.OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+        //{
+        //    throw new System.NotImplementedException();
+        //}
+
+        //void IInRoomCallbacks.OnMasterClientSwitched(Player newMasterClient)
+        //{
+        //    throw new System.NotImplementedException();
+        //}
     }
 }

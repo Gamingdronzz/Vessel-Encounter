@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4172312983919990}
   - component: {fileID: 33408339015369724}
   - component: {fileID: 23509786197645016}
+  - component: {fileID: 114723992215804606}
   m_Layer: 0
   m_Name: double_missile_launcher
   m_TagString: Untagged
@@ -83,3 +84,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1436248763823268}
   m_Mesh: {fileID: 4300000, guid: 4e4f489d7b0654f439f5263ce3254dbd, type: 3}
+--- !u!114 &114723992215804606
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1436248763823268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 809911e115526ca4d86f3fc2177954f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensitivityX: 15
+  minimumX: -360
+  maximumX: 360
+  frameCounter: 20

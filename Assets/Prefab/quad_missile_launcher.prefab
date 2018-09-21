@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4542587720148250}
   - component: {fileID: 33005406149812778}
   - component: {fileID: 23359832473595914}
+  - component: {fileID: 114509923663617416}
   m_Layer: 0
   m_Name: quad_missile_launcher
   m_TagString: Untagged
@@ -83,3 +84,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1285494259769704}
   m_Mesh: {fileID: 4300000, guid: 9f8fd80c1fbdf8d46a944add9db44b09, type: 3}
+--- !u!114 &114509923663617416
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1285494259769704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 809911e115526ca4d86f3fc2177954f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensitivityX: 15
+  minimumX: -360
+  maximumX: 360
+  frameCounter: 20

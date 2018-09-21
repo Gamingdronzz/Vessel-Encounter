@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4427715016180972}
   - component: {fileID: 95948434528668250}
+  - component: {fileID: 114147060407163396}
   m_Layer: 0
   m_Name: single_machine_gun
   m_TagString: Untagged
@@ -209,3 +210,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114147060407163396
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1041914459397056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 809911e115526ca4d86f3fc2177954f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensitivityX: 15
+  minimumX: -360
+  maximumX: 360
+  frameCounter: 20

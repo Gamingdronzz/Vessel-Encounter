@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VesselEncounter.Data;
 
 namespace VesselEncounter.UI.MainMenu
 {
@@ -14,7 +15,9 @@ namespace VesselEncounter.UI.MainMenu
 
         public void StartMatchMaking()
         {
-            GameManager.Instance.CreateOrJoinRoom(30, 2);
+            GameData.Instance.MaxPlayers = 2;
+            GameData.Instance.MatchWaitTime = 30;
+            GameManager.Instance.CreateOrJoinRoom();
         }
     }
 }

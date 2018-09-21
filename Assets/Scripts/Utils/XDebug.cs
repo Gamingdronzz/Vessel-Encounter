@@ -6,6 +6,8 @@ namespace VesselEncounter
 {
     public class XDebug
     {
+        public static bool AddRuntimeLogs = true;
+
         //Add Log Masks Here
         public enum Mask
         {
@@ -32,6 +34,8 @@ namespace VesselEncounter
         {
             if (CanLog(mask))
                 Debug.Log(log);
+            if (AddRuntimeLogs)
+                RuntimeDebug.Instance.AddLog(log);
         }
 
         public static void Log(string log, Mask? mask, Color? color)
@@ -41,6 +45,9 @@ namespace VesselEncounter
                     Debug.Log("<color='" + color.ToString() + "'>" + log + "</color>");
                 else
                     Debug.Log(log);
+
+            if (AddRuntimeLogs)
+                RuntimeDebug.Instance.AddLog(log);
         }
 
         public void LogWarn(string log, Mask mask)
