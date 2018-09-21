@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 903c515ced4cc584b980fdc8eee69a41, type: 3}
+  m_Name: Machine_Gun_1
+  m_EditorClassIdentifier: 
+  MountName: Machine Gun Single
+  MountID: 0
+  MountGameObject: {fileID: 1041914459397056, guid: c27d2a1726b2e8e48a544d386ad36f83,
+    type: 2}
+  MountPosition: 0
+  MountPriority: 1
