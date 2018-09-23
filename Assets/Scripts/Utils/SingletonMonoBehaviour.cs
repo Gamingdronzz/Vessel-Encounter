@@ -46,7 +46,7 @@ namespace VesselEncounter
                         {
                             GameObject singleton = new GameObject();
                             _instance = singleton.AddComponent<T>();
-                            singleton.name = "(singleton) " + typeof(T).ToString();
+                            singleton.name = typeof(T).Name + " - singleton";
 
                             DontDestroyOnLoad(singleton);
 

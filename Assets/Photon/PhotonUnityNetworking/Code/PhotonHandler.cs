@@ -122,9 +122,9 @@ namespace Photon.Pun
             while (PhotonNetwork.IsMessageQueueRunning && doDispatch)
             {
                 // DispatchIncomingCommands() returns true of it found any command to dispatch (event, result or state change)
-                Profiler.BeginSample("DispatchIncomingCommands");
+                UnityEngine.Profiling.Profiler.BeginSample("DispatchIncomingCommands");
                 doDispatch = PhotonNetwork.NetworkingClient.LoadBalancingPeer.DispatchIncomingCommands();
-                Profiler.EndSample();
+                UnityEngine.Profiling.Profiler.EndSample();
             }
         }
 
@@ -145,9 +145,9 @@ namespace Photon.Pun
                 while (PhotonNetwork.IsMessageQueueRunning && doSend)
                 {
                     // Send all outgoing commands
-                    Profiler.BeginSample("SendOutgoingCommands");
+                    UnityEngine.Profiling.Profiler.BeginSample("SendOutgoingCommands");
                     doSend = PhotonNetwork.NetworkingClient.LoadBalancingPeer.SendOutgoingCommands();
-                    Profiler.EndSample();
+                    UnityEngine.Profiling.Profiler.EndSample();
                 }
 
                 this.nextSendTickCount = currentMsSinceStart + this.UpdateInterval;

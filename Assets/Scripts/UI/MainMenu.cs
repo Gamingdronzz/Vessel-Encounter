@@ -6,10 +6,11 @@ using UnityEngine;
 using VesselEncounter.Data;
 using TMPro;
 using System;
+using UnityEngine.EventSystems;
 
 namespace VesselEncounter.UI.MainMenu
 {
-    public class MainMenu : SingletonMonoBehaviour<MainMenu>
+    public class MainMenu : MonoBehaviour
     {
         public TMP_Dropdown RegionListDropdown;
 
@@ -20,13 +21,27 @@ namespace VesselEncounter.UI.MainMenu
         {
             this.gameObject.SetActive(true);
             OnDropDownValueChanged = new TMP_Dropdown.DropdownEvent();
+            InputManager.Instance.ActivateInput(false);
         }
 
-        public void UpdateRegionList(List<Region> regions)
+        private void OnEnable()
         {
+            MyEventManager.Instance.OnRegionListReceived.EventAction += UpdateRegionList;
+            MyEventManager.Instance.OnConnectedToBestRegion.EventAction += OnConnectedToBestRegion;
+        }
+
+        private void OnDisable()
+        {
+            MyEventManager.Instance.OnRegionListReceived.EventAction -= UpdateRegionList;
+            MyEventManager.Instance.OnConnectedToBestRegion.EventAction -= OnConnectedToBestRegion;
+        }
+
+        public void UpdateRegionList(object obj)
+        {
+            XDebug.Log("Updating Region List", XDebug.Mask.MainMenu, XDebug.Color.Yellow);
             List<string> options = new List<string>();
 
-            foreach (Region region in regions)
+            foreach (Region region in NetworkData.Instance.GetRegionList())
             {
                 options.Add(region.Code);
             }
@@ -34,7 +49,6 @@ namespace VesselEncounter.UI.MainMenu
             RegionListDropdown.AddOptions(options);
             RegionListDropdown.onValueChanged = OnDropDownValueChanged;
             OnDropDownValueChanged.AddListener(OnRegionSelected);
-            XDebug.Log("Updating region list");
         }
 
         private void OnRegionSelected(int index)
@@ -52,9 +66,10 @@ namespace VesselEncounter.UI.MainMenu
             GameManager.Instance.CreateOrJoinRoom();
         }
 
-        public void OnConnectedToBestRegion()
+        public void OnConnectedToBestRegion(object obj)
         {
             RegionListDropdown.value = NetworkData.Instance.GetBestRegionIndex();
+            InputManager.Instance.ActivateInput(true);
         }
     }
 }

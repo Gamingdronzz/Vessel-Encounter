@@ -16,7 +16,9 @@ namespace VesselEncounter
             ConnectivityMonitor,
             SceneManager,
             MatchList,
-            NetworkData
+            NetworkData,
+            MyEvent,
+            MainMenu
         }
 
         //Add Color Names here, should be same as colors defined in Color Class
@@ -51,6 +53,15 @@ namespace VesselEncounter
                 RuntimeDebug.Instance.AddLog(log);
         }
 
+        public static void LogError(string log, Mask? mask)
+        {
+            if (CanLog(mask))
+                Debug.Log("<color='" + Color.Red.ToString() + "'>" + log + "</color>");
+
+            if (AddRuntimeLogs)
+                RuntimeDebug.Instance.AddLog(log);
+        }
+
         public void LogWarn(string log, Mask mask)
         {
             if (CanLog(mask))
@@ -78,7 +89,8 @@ namespace VesselEncounter
                 Mask.GameManager,
                 Mask.ConnectivityMonitor,
                 Mask.SceneManager,
-                Mask.MatchList
+                Mask.MatchList,
+                Mask.MainMenu
                 );
         }
 

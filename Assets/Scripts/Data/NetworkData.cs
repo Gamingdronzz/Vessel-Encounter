@@ -16,7 +16,8 @@ namespace VesselEncounter
             if (regions != null)
             {
                 Regions = new List<Region>(regions);
-                OnRegionListUpdated();
+                MyEventManager.Instance.OnRegionListReceived.Dispatch();
+                //OnRegionListUpdated();
             }
             else
             {
@@ -41,12 +42,22 @@ namespace VesselEncounter
 
         private void OnRegionListUpdated()
         {
-            MainMenu.Instance.UpdateRegionList(Regions);
+            //MainMenu.Instance.UpdateRegionList();
         }
 
-        public void OnConnectedToBestRegion()
+        public void UpdateBestRegion(Region bestRegion)
+
         {
-            MainMenu.Instance.OnConnectedToBestRegion();
+            if (bestRegion != null)
+            {
+                BestRegion = bestRegion;
+                MyEventManager.Instance.OnConnectedToBestRegion.Dispatch();
+            }
+            else
+            {
+                XDebug.Log("Null Region Received\nUnable to Update Best Region", XDebug.Mask.NetworkData, XDebug.Color.Red);
+            }
+            //MainMenu.Instance.OnConnectedToBestRegion();
         }
     }
 }

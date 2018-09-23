@@ -9,6 +9,12 @@ namespace VesselEncounter
     {
         public TextMeshProUGUI Log;
         public Transform parentTransform;
+        public Canvas RuntimeDebugCanvas;
+
+        public void ActivateRuntimeLog(bool enable)
+        {
+            RuntimeDebugCanvas.enabled = enable;
+        }
 
         public void AddLog(string message)
         {

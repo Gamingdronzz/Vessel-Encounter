@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class WeaponRotation : MonoBehaviour
 {
-    public float frameCounter = 20;
+    public float FrameCounter = 20;
 
     private Quaternion m_From;
     private Quaternion m_To;
 
     private Transform m_CameraGameObject;
+    private Transform m_MyTransform;
 
-    private float timeCount = 0.0f;
+    private float m_TimeCount = 0.0f;
 
     private void Awake()
     {
@@ -20,7 +21,8 @@ public class WeaponRotation : MonoBehaviour
 
     void Start()
     {
-        m_From = transform.localRotation;
+        m_MyTransform = transform;
+        m_From = m_MyTransform.localRotation;
     }
 
     private void LateUpdate()
@@ -29,7 +31,7 @@ public class WeaponRotation : MonoBehaviour
         m_To.x = 0.0f;
         m_To.z = 0.0f;
 
-        transform.localRotation = Quaternion.Slerp(m_From, m_To, timeCount);
-        timeCount += Time.deltaTime;
+        m_MyTransform.localRotation = Quaternion.Slerp(m_From, m_To, m_TimeCount);
+        m_TimeCount += Time.deltaTime;
     }
 }
