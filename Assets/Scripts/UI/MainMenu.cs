@@ -68,7 +68,7 @@ namespace VesselEncounter.UI.MainMenu
 
         public void StartMatchMaking()
         {
-            GameData.Instance.MaxPlayers = 2;
+            GameData.Instance.MaxPlayers = 4;
             GameData.Instance.MatchWaitTime = 30;
             GameManager.Instance.CreateOrJoinRoom();
         }

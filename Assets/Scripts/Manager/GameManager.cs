@@ -167,7 +167,9 @@ namespace VesselEncounter
                 XDebug.Log("Joined Room Creation Time - " + (int)room.CustomProperties[RoomPropertyKeys.Key_RoomCreateTime], XDebug.Mask.GameManager, null);
                 NetworkData.Instance.CurrentRoom = room;
                 GameData.Instance.MatchWaitTime = (int)room.CustomProperties[RoomPropertyKeys.Key_MatchWaitTime];
-                SceneManager.Instance.LoadScene(SceneManager.Scene.Game, UnityEngine.SceneManagement.LoadSceneMode.Single);
+                if (room.MaxPlayers == room.PlayerCount)
+                    PhotonNetwork.LoadLevel("Game");
+                //SceneManager.Instance.LoadScene(SceneManager.Scene.Game, UnityEngine.SceneManagement.LoadSceneMode.Single);
             }
         }
 
@@ -185,6 +187,7 @@ namespace VesselEncounter
         {
             XDebug.Log("On Connected to master", XDebug.Mask.GameManager, null);
             PhotonNetwork.NickName = "Player - " + UnityEngine.Random.Range(0, 9999);
+            PhotonNetwork.AutomaticallySyncScene = true;
             MyEventManager.Instance.OnConnectedToMaster.Dispatch();
         }
 
