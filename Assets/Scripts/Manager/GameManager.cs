@@ -168,7 +168,10 @@ namespace VesselEncounter
                 NetworkData.Instance.CurrentRoom = room;
                 GameData.Instance.MatchWaitTime = (int)room.CustomProperties[RoomPropertyKeys.Key_MatchWaitTime];
                 if (room.MaxPlayers == room.PlayerCount)
-                    PhotonNetwork.LoadLevel("Game");
+                {
+                    XDebug.Log("All Players joined ,loading level");
+                    PhotonNetwork.LoadLevel(SceneManager.Scene.Game.ToString());
+                }
                 //SceneManager.Instance.LoadScene(SceneManager.Scene.Game, UnityEngine.SceneManagement.LoadSceneMode.Single);
             }
         }
