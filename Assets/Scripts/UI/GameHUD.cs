@@ -38,6 +38,7 @@ namespace VesselEncounter.UI
 
         private void OnDisable()
         {
+            MyEventManager.Instance.OnPlayerNameChanged.EventActionString -= SetPlayerName;
         }
 
         private void Reset()
@@ -50,7 +51,7 @@ namespace VesselEncounter.UI
 
         public void SetPlayerName(string playerName)
         {
-            this.PlayerName.text = playerName;
+            PlayerName.text = playerName;
         }
     }
 }

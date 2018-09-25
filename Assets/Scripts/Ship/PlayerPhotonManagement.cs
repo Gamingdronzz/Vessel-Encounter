@@ -10,17 +10,30 @@ public class PlayerPhotonManagement : MonoBehaviour
     private PhotonView m_PhotonView;
 
     [SerializeField]
-    private GameObject m_CameraController, m_PlayerController;
+    private GameObject m_CameraController;
+
+    [SerializeField]
+    private ShipController m_ShipController;
+
+    [SerializeField]
+    private FloatObject m_floatObject;
 
     private void Start()
     {
         m_PhotonView = GetComponent<PhotonView>();
         if (m_PhotonView != null && !m_PhotonView.IsMine)
         {
-            if (m_CameraController != null && m_PlayerController != null)
+            if (m_CameraController != null && m_ShipController != null)
             {
                 m_CameraController.SetActive(false);
-                m_PlayerController.SetActive(false);
+            }
+            if (m_ShipController != null)
+            {
+                m_ShipController.enabled = false;
+            }
+            if (m_floatObject != null)
+            {
+                m_floatObject.enabled = false;
             }
         }
     }
