@@ -51,6 +51,7 @@ namespace VesselEncounter.UI
 
         public void SetPlayerName(string playerName)
         {
+            XDebug.Log("Setting Player Name", XDebug.Mask.GameHUD);
             PlayerName.text = playerName;
         }
     }

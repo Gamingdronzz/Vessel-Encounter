@@ -20,7 +20,9 @@ namespace VesselEncounter
             MyEvent,
             MainMenu,
             ShipCompass,
-            GameStateManager
+            GameStateManager,
+            MiniMap,
+            GameHUD
         }
 
         //Add Color Names here, should be same as colors defined in Color Class
@@ -94,7 +96,9 @@ namespace VesselEncounter
                 Mask.MatchList,
                 Mask.MainMenu,
                 Mask.ShipCompass,
-                Mask.GameStateManager
+                Mask.GameStateManager,
+                Mask.MiniMap,
+                Mask.GameHUD
                 );
         }
 

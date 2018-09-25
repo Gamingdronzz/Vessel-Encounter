@@ -40,8 +40,12 @@ namespace VesselEncounter
 
         public void OnGameStateUpdated(object obj)
         {
+            XDebug.Log("Game state updated", XDebug.Mask.MiniMap);
             if (GameStateManager.Instance.GetCurrentGameState() == GameStateManager.GameState.Game)
+            {
                 ShipTransform = GameData.Instance.PlayerGO.transform;
+                XDebug.Log("Ship transform attached", XDebug.Mask.MiniMap);
+            }
         }
 
         // Update is called once per frame
