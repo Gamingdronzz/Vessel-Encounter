@@ -167,11 +167,7 @@ namespace VesselEncounter
                 XDebug.Log("Joined Room Creation Time - " + (int)room.CustomProperties[RoomPropertyKeys.Key_RoomCreateTime], XDebug.Mask.GameManager, null);
                 NetworkData.Instance.CurrentRoom = room;
                 GameData.Instance.MatchWaitTime = (int)room.CustomProperties[RoomPropertyKeys.Key_MatchWaitTime];
-                if (room.MaxPlayers == room.PlayerCount)
-                {
-                    XDebug.Log("All Players joined ,loading level");
-                    PhotonNetwork.LoadLevel(SceneManager.Scene.Game.ToString());
-                }
+
                 //SceneManager.Instance.LoadScene(SceneManager.Scene.Game, UnityEngine.SceneManagement.LoadSceneMode.Single);
             }
         }
@@ -179,6 +175,11 @@ namespace VesselEncounter
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             XDebug.Log("On Player Enter Room - " + newPlayer.NickName, XDebug.Mask.GameManager, XDebug.Color.Green);
+            if (PhotonNetwork.IsMasterClient && NetworkData.Instance.CurrentRoom.MaxPlayers == NetworkData.Instance.CurrentRoom.PlayerCount)
+            {
+                XDebug.Log("All Players joined ,loading level");
+                PhotonNetwork.LoadLevel(SceneManager.Scene.Game.ToString());
+            }
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
