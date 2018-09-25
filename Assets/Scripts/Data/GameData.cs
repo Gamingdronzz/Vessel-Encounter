@@ -8,8 +8,6 @@ namespace VesselEncounter.Data
 {
     public class GameData : SingletonMonoBehaviour<GameData>
     {
-        public List<RoomInfo> RoomList { get; internal set; }
-        public Room CurrentRoom;
         public byte MaxPlayers;
         public int PlayerLevel = 26;
         public GameLevelBrackets MinimumSkillLevel;
@@ -19,7 +17,6 @@ namespace VesselEncounter.Data
 
         public void ResetGameData()
         {
-            CurrentRoom = null;
             UpdateRoomLevel();
             RoomOptions = null;
         }
@@ -38,12 +35,6 @@ namespace VesselEncounter.Data
                 MinimumSkillLevel = GameLevelBrackets.HundredOne_TwoFifty;
             else
                 MinimumSkillLevel = GameLevelBrackets.TwoFiftyOne_FiveHundred;
-        }
-
-        public void UpdateRoomList(List<RoomInfo> roomList)
-        {
-            this.RoomList = roomList;
-            MyEventManager.Instance.OnRoomListUpdated.Dispatch();
         }
     }
 }

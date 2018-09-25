@@ -26,24 +26,31 @@ namespace VesselEncounter.UI.MainMenu
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnRegionListReceived.EventAction += UpdateRegionList;
+            MyEventManager.Instance.OnRegionListUpdated.EventAction += OnRegionListUpdated;
             MyEventManager.Instance.OnConnectedToBestRegion.EventAction += OnConnectedToBestRegion;
         }
 
         private void OnDisable()
         {
-            MyEventManager.Instance.OnRegionListReceived.EventAction -= UpdateRegionList;
-            MyEventManager.Instance.OnConnectedToBestRegion.EventAction -= OnConnectedToBestRegion;
+            try
+            {
+                MyEventManager.Instance.OnRegionListUpdated.EventAction -= OnRegionListUpdated;
+                MyEventManager.Instance.OnConnectedToBestRegion.EventAction -= OnConnectedToBestRegion;
+            }
+            catch (NullReferenceException nre)
+            {
+                XDebug.Log(nre.StackTrace, XDebug.Mask.MainMenu);
+            }
         }
 
-        public void UpdateRegionList(object obj)
+        public void OnRegionListUpdated(object obj)
         {
             XDebug.Log("Updating Region List", XDebug.Mask.MainMenu, XDebug.Color.Yellow);
             List<string> options = new List<string>();
 
             foreach (Region region in NetworkData.Instance.GetRegionList())
             {
-                options.Add(region.Code);
+                options.Add(region.Code + " - " + (region.Ping / 10000000) + " ms");
             }
             RegionListDropdown.ClearOptions();
             RegionListDropdown.AddOptions(options);
@@ -54,8 +61,8 @@ namespace VesselEncounter.UI.MainMenu
         private void OnRegionSelected(int index)
         {
             string Region = NetworkData.Instance.GetRegionList()[index].Code;
-            //PhotonNetwork.Disconnect();
-            //PhotonNetwork.ConnectToRegion(Region);
+            PhotonNetwork.Disconnect();
+            PhotonNetwork.ConnectToRegion(Region);
             XDebug.Log("Connecting to - " + Region);
         }
 
@@ -66,7 +73,7 @@ namespace VesselEncounter.UI.MainMenu
             GameManager.Instance.CreateOrJoinRoom();
         }
 
-        public void OnConnectedToBestRegion(object obj)
+        public void OnConnectedToBestRegion(params object[] obj)
         {
             RegionListDropdown.value = NetworkData.Instance.GetBestRegionIndex();
             InputManager.Instance.ActivateInput(true);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
@@ -15,29 +16,6 @@ namespace VesselEncounter
         private void Awake()
         {
             Connect();
-        }
-
-        // Use this for initialization
-        private void Start()
-        {
-        }
-
-        // Update is called once per frame
-        private void Update()
-        {
-        }
-
-        private void CustomRoom()
-        {
-        }
-
-        public void DefaultRoom()
-        {
-            XDebug.Log("Default Room", null, XDebug.Color.Green);
-            if (PhotonNetwork.IsConnected)
-            {
-                PhotonNetwork.JoinRandomRoom();
-            }
         }
 
         /// <summary>
@@ -70,7 +48,7 @@ namespace VesselEncounter
             //PhotonNetwork.JoinOrCreateRoom("Default Room-" + counter, roomOptions, TypedLobby.Default);
             if (PhotonNetwork.IsConnectedAndReady)
             {
-                GameData.Instance.PlayerLevel = Random.Range(1, 100);
+                GameData.Instance.PlayerLevel = UnityEngine.Random.Range(1, 100);
                 GameData.Instance.UpdateRoomLevel();
                 XDebug.Log("Room Count = " + PhotonNetwork.CountOfRooms + "\nInitial Room Level = " + GameData.Instance.MinimumSkillLevel + "\nPlayer Level = " + GameData.Instance.PlayerLevel);
                 if (PhotonNetwork.CountOfRooms < MaximumRoomsUnconditionalJoin)
@@ -187,7 +165,7 @@ namespace VesselEncounter
             {
                 XDebug.Log("On Join Room - " + room.Name + "Skill Level = " + room.CustomProperties[RoomPropertyKeys.Key_SkillLevel], XDebug.Mask.GameManager, null);
                 XDebug.Log("Joined Room Creation Time - " + (int)room.CustomProperties[RoomPropertyKeys.Key_RoomCreateTime], XDebug.Mask.GameManager, null);
-                GameData.Instance.CurrentRoom = room;
+                NetworkData.Instance.CurrentRoom = room;
                 GameData.Instance.MatchWaitTime = (int)room.CustomProperties[RoomPropertyKeys.Key_MatchWaitTime];
                 SceneManager.Instance.LoadScene(SceneManager.Scene.Game, UnityEngine.SceneManagement.LoadSceneMode.Single);
             }
@@ -200,20 +178,20 @@ namespace VesselEncounter
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
-            XDebug.Log("On Player Left Room - " + otherPlayer.NickName + "\nTotal Player Count = " + GameData.Instance.CurrentRoom.PlayerCount, XDebug.Mask.GameManager, XDebug.Color.Red);
+            XDebug.Log("On Player Left Room - " + otherPlayer.NickName + "\nTotal Player Count = " + NetworkData.Instance.CurrentRoom.PlayerCount, XDebug.Mask.GameManager, XDebug.Color.Red);
         }
 
         public override void OnConnectedToMaster()
         {
             XDebug.Log("On Connected to master", XDebug.Mask.GameManager, null);
-            PhotonNetwork.NickName = "Player - " + Random.Range(0, 9999);
-            NetworkData.Instance.UpdateBestRegion(PhotonNetwork.NetworkingClient.RegionHandler.BestRegion);
+            PhotonNetwork.NickName = "Player - " + UnityEngine.Random.Range(0, 9999);
+            MyEventManager.Instance.OnConnectedToMaster.Dispatch();
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
             XDebug.Log("Updated room list", XDebug.Mask.GameManager, XDebug.Color.Yellow);
-            GameData.Instance.UpdateRoomList(roomList);
+            NetworkData.Instance.UpdateRoomList(roomList);
         }
 
         public override void OnLobbyStatisticsUpdate(List<TypedLobbyInfo> lobbyStatistics)
@@ -246,11 +224,11 @@ namespace VesselEncounter
             base.OnRegionListReceived(regionHandler);
             NetworkData.Instance.UpdateRegionList(regionHandler.EnabledRegions);
 
-            foreach (Region region in regionHandler.EnabledRegions)
-            {
-                XDebug.Log("Region Code = " + region.Code, XDebug.Mask.GameManager, XDebug.Color.Cyan);
-                XDebug.Log("Region Ping = " + region.Ping, XDebug.Mask.GameManager, XDebug.Color.Red);
-            }
+            //foreach (Region region in regionHandler.EnabledRegions)
+            //{
+            //    XDebug.Log("Region Code = " + region.Code, XDebug.Mask.GameManager, XDebug.Color.Cyan);
+            //    XDebug.Log("Region Ping = " + region.Ping, XDebug.Mask.GameManager, XDebug.Color.Red);
+            //}
         }
 
         public override void OnCustomAuthenticationResponse(Dictionary<string, object> data)
@@ -264,18 +242,6 @@ namespace VesselEncounter
             NoMatchFound = 32760,
         }
 
-        //public override void OnLeftLobby()
-        //{
-        //    base.OnLeftLobby();
-        //    XDebug.Log("On Left Lobby", XDebug.Mask.GameManager, null);
-        //}
-
-        //public override void OnLeftRoom()
-        //{
-        //    base.OnLeftRoom();
-        //    XDebug.Log("On Left Room", XDebug.Mask.GameManager, null);
-        //}
-
         public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
         {
             XDebug.Log("Room Properties Update", XDebug.Mask.GameManager, XDebug.Color.Yellow);
@@ -287,15 +253,5 @@ namespace VesselEncounter
             {
             }
         }
-
-        //void IInRoomCallbacks.OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
-
-        //void IInRoomCallbacks.OnMasterClientSwitched(Player newMasterClient)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
     }
 }

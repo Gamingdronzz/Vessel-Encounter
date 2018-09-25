@@ -20,10 +20,10 @@ namespace VesselEncounter
         public void UpdateUI()
         {
             Debug.Log("Updating UI");
-            if (GameData.Instance.RoomList != null && GameData.Instance.RoomList.Count > 0)
+            if (NetworkData.Instance.RoomList != null && NetworkData.Instance.RoomList.Count > 0)
             {
                 int i = 1;
-                foreach (RoomInfo roomInfo in GameData.Instance.RoomList)
+                foreach (RoomInfo roomInfo in NetworkData.Instance.RoomList)
                 {
                     GameObject matchItem = Instantiate(MatchItemTemplate, parentTransform);
                     matchItem.GetComponent<MatchItemTemplate>().TxtSerial.text = "" + i++;
