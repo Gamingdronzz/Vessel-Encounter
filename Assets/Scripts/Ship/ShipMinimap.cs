@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShipMinimap : MonoBehaviour
+namespace VesselEncounter
 {
-    // Use this for initialization
-    void Start()
+    public class ShipMinimap : MonoBehaviour
     {
-        Minimap.INSTANCE.ShipTransform = transform;
+        // Use this for initialization
+        private void Start()
+        {
+            Minimap.Instance.ShipTransform = transform;
+        }
     }
 }

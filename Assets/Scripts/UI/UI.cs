@@ -6,14 +6,14 @@ using UnityEngine.UI;
 public class UI : MonoBehaviour
 {
     public static UI INSTANCE;
-    
+
     public RawImage CompassImage;
     public RawImage CrosshairImage;
 
     public GameObject HUDPanelGO;
-    
-	// Use this for initialization
-	void Start ()
+
+    // Use this for initialization
+    private void Start()
     {
         if (INSTANCE == null)
         {
@@ -23,7 +23,7 @@ public class UI : MonoBehaviour
         {
             Destroy(this);
         }
-	}
+    }
 
     private void Reset()
     {
