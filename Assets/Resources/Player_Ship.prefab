@@ -560,6 +560,9 @@ MonoBehaviour:
   m_CameraController: {fileID: 0}
   m_ShipController: {fileID: 114207407476202950}
   m_floatObject: {fileID: 114362014868483530}
+  PlayerCamera: {fileID: 1417749067391032}
+  m_ShipMountController: {fileID: 114470488812404998}
+  m_ShipCompass: {fileID: 114512930853447652}
 --- !u!114 &114867408740472174
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -579,7 +582,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114164469822147086}
   viewIdField: 0
-  InstantiationId: -1
+  InstantiationId: 1
   isRuntimeInstantiated: 0
 --- !u!114 &114904223046290824
 MonoBehaviour:
