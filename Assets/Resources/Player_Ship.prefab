@@ -50,7 +50,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4655693641687528}
   - component: {fileID: 20354133264567192}
-  - component: {fileID: 81284018566593636}
   - component: {fileID: 114442178188198832}
   - component: {fileID: 114904223046290824}
   - component: {fileID: 82989525288168076}
@@ -339,13 +338,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 7.7861404, y: 7.823601, z: 36.23477}
   m_Center: {x: -0.037670135, y: -0.0111198425, z: 0.30526733}
---- !u!81 &81284018566593636
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1417749067391032}
-  m_Enabled: 1
 --- !u!82 &82989525288168076
 AudioSource:
   m_ObjectHideFlags: 1
@@ -571,7 +563,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114164469822147086}
   viewIdField: 0
-  InstantiationId: -1
+  InstantiationId: 1
   isRuntimeInstantiated: 0
 --- !u!114 &114904223046290824
 MonoBehaviour:
