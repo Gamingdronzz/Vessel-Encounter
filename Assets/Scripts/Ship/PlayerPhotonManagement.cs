@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VesselEncounter;
 
 [RequireComponent(typeof(PhotonView))]
 public class PlayerPhotonManagement : MonoBehaviour
@@ -17,6 +18,15 @@ public class PlayerPhotonManagement : MonoBehaviour
 
     [SerializeField]
     private FloatObject m_floatObject;
+
+    [SerializeField]
+    private MouseLookRotation m_mouseLookRotation;
+
+    [SerializeField]
+    private ShipMountController m_ShipMountController;
+
+    [SerializeField]
+    private ShipCompass m_ShipCompass;
 
     private void Start()
     {
@@ -35,6 +45,24 @@ public class PlayerPhotonManagement : MonoBehaviour
             {
                 m_floatObject.enabled = false;
             }
+
+            if (m_mouseLookRotation != null)
+            {
+                m_mouseLookRotation.enabled = false;
+            }
+
+            if (m_ShipMountController != null)
+            {
+                m_ShipMountController.enabled = false;
+            }
+
+            if (m_mouseLookRotation != null)
+            {
+                m_mouseLookRotation.enabled = false;
+            }
+
+            if (!m_PhotonView.IsMine)
+                this.enabled = false;
         }
     }
 }

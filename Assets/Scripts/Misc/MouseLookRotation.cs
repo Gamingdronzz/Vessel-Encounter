@@ -10,6 +10,7 @@ public class MouseLookRotation : MonoBehaviour
         MouseX = 1,
         MouseY = 2
     }
+
     public RotationAxes Axes = RotationAxes.MouseXAndY;
     public float SensitivityX = 15F;
     public float SensitivityY = 15F;
@@ -27,20 +28,20 @@ public class MouseLookRotation : MonoBehaviour
     private float m_RotAverageX = 0F;
 
     private List<float> m_RotArrayY = new List<float>();
-    float m_RotAverageY = 0F;
+    private float m_RotAverageY = 0F;
 
     public float FrameCounter = 20;
 
     private Quaternion m_OriginalRotation;
     private Transform m_MyTransform;
 
-    void Start()
+    private void Start()
     {
         m_MyTransform = transform;
         m_OriginalRotation = m_MyTransform.localRotation;
     }
 
-    void Update()
+    private void Update()
     {
         if (Axes == RotationAxes.MouseXAndY)
         {
@@ -129,7 +130,7 @@ public class MouseLookRotation : MonoBehaviour
             m_MyTransform.localRotation = m_OriginalRotation * yQuaternion;
         }
     }
-    
+
     public static float ClampAngle(float angle, float min, float max)
     {
         angle = angle % 360;
