@@ -511,7 +511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b2176d8d724ff4e9b1aee7b0062f71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterLevel: 102.5
+  waterLevel: 3
   floatThreshold: 1
   waterDensity: 1
   downForce: 4
@@ -571,7 +571,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114164469822147086}
   viewIdField: 0
-  InstantiationId: 0
+  InstantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114904223046290824
 MonoBehaviour:
