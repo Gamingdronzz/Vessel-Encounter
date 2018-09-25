@@ -18,6 +18,18 @@ namespace VesselEncounter
             Connect();
         }
 
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            MyEventManager.Instance.OnGameWaitTimeOver.EventAction += OnGameWaitTimeOver;
+        }
+
+        public override void OnDisable()
+        {
+            base.OnEnable();
+            MyEventManager.Instance.OnGameWaitTimeOver.EventAction -= OnGameWaitTimeOver;
+        }
+
         /// <summary>
         /// Connect to the Photon Server
         /// </summary>
@@ -175,9 +187,12 @@ namespace VesselEncounter
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             XDebug.Log("On Player Enter Room - " + newPlayer.NickName, XDebug.Mask.GameManager, XDebug.Color.Green);
-            if (PhotonNetwork.IsMasterClient && NetworkData.Instance.CurrentRoom.MaxPlayers == NetworkData.Instance.CurrentRoom.PlayerCount)
+        }
+
+        public void OnGameWaitTimeOver(object obj)
+        {
+            if (PhotonNetwork.IsMasterClient)
             {
-                XDebug.Log("All Players joined ,loading level");
                 PhotonNetwork.LoadLevel(SceneManager.Scene.Game.ToString());
             }
         }

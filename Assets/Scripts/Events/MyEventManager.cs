@@ -12,5 +12,6 @@ namespace VesselEncounter
         public MyEvent OnConnectedToMaster = new MyEvent();
         public MyEvent OnPlayerNameChanged = new MyEvent();
         public MyEvent OnGameStateUpdated = new MyEvent();
+        public MyEvent OnGameWaitTimeOver = new MyEvent();
     }
 }
