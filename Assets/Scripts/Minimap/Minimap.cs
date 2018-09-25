@@ -56,7 +56,6 @@ namespace VesselEncounter
                 Vector3 newPos = ShipTransform.position;
                 newPos.y = m_MyTransform.position.y;
                 m_MyTransform.position = newPos;
-
                 m_MyTransform.rotation = Quaternion.Euler(90.0f, ShipTransform.eulerAngles.y, 0.0f);
             }
         }
