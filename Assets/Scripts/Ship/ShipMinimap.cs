@@ -9,7 +9,7 @@ namespace VesselEncounter
         // Use this for initialization
         private void Start()
         {
-            Minimap.Instance.ShipTransform = transform;
+            //Minimap.Instance.ShipTransform = transform;
         }
     }
 }
