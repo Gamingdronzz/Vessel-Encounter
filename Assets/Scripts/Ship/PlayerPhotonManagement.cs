@@ -56,6 +56,11 @@ public class PlayerPhotonManagement : MonoBehaviour
                 m_ShipMountController.enabled = false;
             }
 
+            if (m_ShipCompass != null)
+            {
+                m_ShipCompass.enabled = false;
+            }
+
             //if (!m_PhotonView.IsMine)
             //    this.enabled = false;
         }
