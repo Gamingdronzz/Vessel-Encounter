@@ -10,6 +10,7 @@ namespace VesselEncounter.Game
         private void Start()
         {
             PhotonNetwork.Instantiate("Player_Ship", new Vector3(0, 0, 0), Quaternion.identity, 0);
+            MyEventManager.Instance.OnPlayerNameChanged.Dispatch(PhotonNetwork.LocalPlayer.NickName);
         }
     }
 }

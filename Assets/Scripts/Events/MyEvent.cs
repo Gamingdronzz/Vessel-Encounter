@@ -16,6 +16,10 @@ namespace VesselEncounter
         //General Action Event
         public event intAction EventActionInt;
 
+        public event stringAction EventActionString;
+
+        public delegate void stringAction(string value);
+
         public void Dispatch(params object[] obj)
         {
             if (EventAction != null)
@@ -28,6 +32,14 @@ namespace VesselEncounter
         {
             if (EventActionInt != null)
                 EventActionInt(value);
+            else
+                XDebug.Log("Event is Null\nPlease Initialize event first", XDebug.Mask.MyEvent, XDebug.Color.Red);
+        }
+
+        public void Dispatch(string value)
+        {
+            if (EventActionString != null)
+                EventActionString(value);
             else
                 XDebug.Log("Event is Null\nPlease Initialize event first", XDebug.Mask.MyEvent, XDebug.Color.Red);
         }
