@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VesselEncounter.Data;
 
 namespace VesselEncounter.Game
 {
@@ -9,8 +10,11 @@ namespace VesselEncounter.Game
     {
         private void Start()
         {
-            PhotonNetwork.Instantiate("Player_Ship", new Vector3(0, 0, 0), Quaternion.identity, 0);
+            GameObject Player = PhotonNetwork.Instantiate("Player_Ship", new Vector3(0, 0, 0), Quaternion.identity, 0);
+            GameData.Instance.PlayerGO = Player;
+            Player.name = PhotonNetwork.LocalPlayer.NickName;
             MyEventManager.Instance.OnPlayerNameChanged.Dispatch(PhotonNetwork.LocalPlayer.NickName);
+            GameStateManager.Instance.UpdateGameState(GameStateManager.GameState.Game);
         }
     }
 }

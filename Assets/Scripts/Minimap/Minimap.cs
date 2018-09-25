@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using VesselEncounter.Data;
 
 namespace VesselEncounter
 {
@@ -29,14 +28,33 @@ namespace VesselEncounter
             m_MyTransform = transform;
         }
 
+        private void OnEnable()
+        {
+            MyEventManager.Instance.OnGameStateUpdated.EventAction += OnGameStateUpdated;
+        }
+
+        private void OnDisable()
+        {
+            MyEventManager.Instance.OnGameStateUpdated.EventAction -= OnGameStateUpdated;
+        }
+
+        public void OnGameStateUpdated(object obj)
+        {
+            if (GameStateManager.Instance.GetCurrentGameState() == GameStateManager.GameState.Game)
+                ShipTransform = GameData.Instance.PlayerGO.transform;
+        }
+
         // Update is called once per frame
         private void LateUpdate()
         {
-            Vector3 newPos = ShipTransform.position;
-            newPos.y = m_MyTransform.position.y;
-            m_MyTransform.position = newPos;
+            if (GameStateManager.Instance.GetCurrentGameState() == GameStateManager.GameState.Game)
+            {
+                Vector3 newPos = ShipTransform.position;
+                newPos.y = m_MyTransform.position.y;
+                m_MyTransform.position = newPos;
 
-            m_MyTransform.rotation = Quaternion.Euler(90.0f, ShipTransform.eulerAngles.y, 0.0f);
+                m_MyTransform.rotation = Quaternion.Euler(90.0f, ShipTransform.eulerAngles.y, 0.0f);
+            }
         }
     }
 }

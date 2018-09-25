@@ -19,7 +19,8 @@ namespace VesselEncounter
             NetworkData,
             MyEvent,
             MainMenu,
-            ShipCompass
+            ShipCompass,
+            GameStateManager
         }
 
         //Add Color Names here, should be same as colors defined in Color Class
@@ -92,7 +93,8 @@ namespace VesselEncounter
                 Mask.SceneManager,
                 Mask.MatchList,
                 Mask.MainMenu,
-                Mask.ShipCompass
+                Mask.ShipCompass,
+                Mask.GameStateManager
                 );
         }
 

@@ -12,6 +12,7 @@ namespace VesselEncounter.Data
         public int PlayerLevel = 26;
         public GameLevelBrackets MinimumSkillLevel;
         public RoomOptions RoomOptions;
+        public GameObject PlayerGO;
 
         public int MatchWaitTime { get; internal set; }
 
