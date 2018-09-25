@@ -20,7 +20,7 @@ public class PlayerPhotonManagement : MonoBehaviour
     private FloatObject m_floatObject;
 
     [SerializeField]
-    private MouseLookRotation m_mouseLookRotation;
+    private GameObject PlayerCamera;
 
     [SerializeField]
     private ShipMountController m_ShipMountController;
@@ -46,9 +46,9 @@ public class PlayerPhotonManagement : MonoBehaviour
                 m_floatObject.enabled = false;
             }
 
-            if (m_mouseLookRotation != null)
+            if (PlayerCamera != null)
             {
-                m_mouseLookRotation.enabled = false;
+                PlayerCamera.SetActive(false);
             }
 
             if (m_ShipMountController != null)
@@ -56,13 +56,8 @@ public class PlayerPhotonManagement : MonoBehaviour
                 m_ShipMountController.enabled = false;
             }
 
-            if (m_mouseLookRotation != null)
-            {
-                m_mouseLookRotation.enabled = false;
-            }
-
-            if (!m_PhotonView.IsMine)
-                this.enabled = false;
+            //if (!m_PhotonView.IsMine)
+            //    this.enabled = false;
         }
     }
 }
