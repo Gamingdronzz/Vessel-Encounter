@@ -1,20 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VesselEncounter.UI;
 
-public class ShipCompass : MonoBehaviour
+namespace VesselEncounter
 {
-    private Transform m_MyTransform;
+    public class ShipCompass : MonoBehaviour
+    {
+        private Transform m_MyTransform;
 
-	// Use this for initialization
-	void Start ()
-    {
-        m_MyTransform = transform;
-	}
-	
-	// Update is called once per frame
-	void LateUpdate ()
-    {
-        UI.INSTANCE.CompassImage.uvRect = new Rect(m_MyTransform.localEulerAngles.y / 360, 0, 1, 1);
-	}
+        // Use this for initialization
+        void Start()
+        {
+            m_MyTransform = transform;
+        }
+
+        // Update is called once per frame
+        void LateUpdate()
+        {
+            GameHUD.Instance.CompassImage.uvRect = new Rect(m_MyTransform.localEulerAngles.y / 360, 0, 1, 1);
+        }
+    }
 }
