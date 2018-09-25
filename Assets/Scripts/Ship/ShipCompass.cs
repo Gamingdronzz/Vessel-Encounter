@@ -18,7 +18,10 @@ namespace VesselEncounter
         // Update is called once per frame
         void LateUpdate()
         {
-            GameHUD.Instance.CompassImage.uvRect = new Rect(m_MyTransform.localEulerAngles.y / 360, 0, 1, 1);
+            if (m_MyTransform != null && GameHUD.Instance.CompassImage != null)
+                GameHUD.Instance.CompassImage.uvRect = new Rect(m_MyTransform.localEulerAngles.y / 360, 0, 1, 1);
+            else
+                XDebug.Log("Transform or gameHUD instance null", XDebug.Mask.ShipCompass);
         }
     }
 }
