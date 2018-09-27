@@ -21,17 +21,16 @@ namespace VesselEncounter
         public override void OnEnable()
         {
             base.OnEnable();
-            MyEventManager.Instance.OnGamePlayConditionsMet.EventAction += OnGamePlayConditionsMet;
-            MyEventManager.Instance.OnCreatedOrJoinedRoom.EventAction += OnCreatedOrJoinedRoom;
+            MyEventManager.Instance.OnGamePlayConditionsMet.EventActionVoid += OnGamePlayConditionsMet;
+            MyEventManager.Instance.OnCreatedOrJoinedRoom.EventActionVoid += OnCreatedOrJoinedRoom;
         }
 
         public override void OnDisable()
         {
             base.OnEnable();
-            MyEventManager.Instance.OnGamePlayConditionsMet.EventAction -= OnGamePlayConditionsMet;
-            MyEventManager.Instance.OnCreatedOrJoinedRoom.EventAction -= OnCreatedOrJoinedRoom;
+            MyEventManager.Instance.OnGamePlayConditionsMet.EventActionVoid -= OnGamePlayConditionsMet;
+            MyEventManager.Instance.OnCreatedOrJoinedRoom.EventActionVoid -= OnCreatedOrJoinedRoom;
         }
-
 
         /// <summary>
         /// Connect to the Photon Server
@@ -180,14 +179,13 @@ namespace VesselEncounter
             {
                 XDebug.Log("On Join Room - " + room.Name + "Skill Level = " + room.CustomProperties[RoomPropertyKeys.Key_SkillLevel], XDebug.Mask.GameManager, null);
                 XDebug.Log("Joined Room Creation Time - " + (int)room.CustomProperties[RoomPropertyKeys.Key_RoomCreateTime], XDebug.Mask.GameManager, null);
-                NetworkData.Instance.CurrentRoom = room;
                 GameData.Instance.MatchWaitTime = (int)room.CustomProperties[RoomPropertyKeys.Key_MatchWaitTime];
                 MyEventManager.Instance.OnCreatedOrJoinedRoom.Dispatch();
-                //SceneManager.Instance.LoadScene(SceneManager.Scene.Game, UnityEngine.SceneManagement.LoadSceneMode.Single);
+                //SceneManager.Instance.LoadScene(SceneManager.Scen,e.Game, UnityEngine.SceneManagement.LoadSceneMode.Single);
             }
         }
 
-        public void OnCreatedOrJoinedRoom(object obj)
+        public void OnCreatedOrJoinedRoom()
         {
             XDebug.Log("Loading finished...Waiting Scene will be loaded now", XDebug.Mask.MainMenu);
             SceneManager.Instance.LoadScene(SceneManager.Scene.WaitScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
@@ -196,11 +194,12 @@ namespace VesselEncounter
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             XDebug.Log("On Player Enter Room - " + newPlayer.NickName, XDebug.Mask.GameManager, XDebug.Color.Green);
+            MyEventManager.Instance.OnPlayerJoined.Dispatch();
             if (PhotonNetwork.CurrentRoom.PlayerCount == GameData.Instance.MaxPlayers)
                 MyEventManager.Instance.OnGamePlayConditionsMet.Dispatch();
         }
 
-        public void OnGamePlayConditionsMet(object obj)
+        public void OnGamePlayConditionsMet()
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
             if (PhotonNetwork.IsMasterClient)
@@ -211,7 +210,8 @@ namespace VesselEncounter
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
-            XDebug.Log("On Player Left Room - " + otherPlayer.NickName + "\nTotal Player Count = " + NetworkData.Instance.CurrentRoom.PlayerCount, XDebug.Mask.GameManager, XDebug.Color.Red);
+            XDebug.Log("On Player Left Room - " + otherPlayer.NickName + "\nTotal Player Count = " + PhotonNetwork.CurrentRoom.PlayerCount, XDebug.Mask.GameManager, XDebug.Color.Red);
+            MyEventManager.Instance.OnPlayerLeft.Dispatch();
         }
 
         public override void OnConnectedToMaster()

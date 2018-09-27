@@ -27,18 +27,16 @@ namespace VesselEncounter.UI.MainMenu
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnRegionListUpdated.EventAction += OnRegionListUpdated;
-            MyEventManager.Instance.OnConnectedToBestRegion.EventAction += OnConnectedToBestRegion;
-          
+            MyEventManager.Instance.OnRegionListUpdated.EventActionVoid += OnRegionListUpdated;
+            MyEventManager.Instance.OnConnectedToBestRegion.EventActionVoid += OnConnectedToBestRegion;
         }
 
         private void OnDisable()
         {
             try
             {
-                MyEventManager.Instance.OnRegionListUpdated.EventAction -= OnRegionListUpdated;
-                MyEventManager.Instance.OnConnectedToBestRegion.EventAction -= OnConnectedToBestRegion;
-               
+                MyEventManager.Instance.OnRegionListUpdated.EventActionVoid -= OnRegionListUpdated;
+                MyEventManager.Instance.OnConnectedToBestRegion.EventActionVoid -= OnConnectedToBestRegion;
             }
             catch (NullReferenceException nre)
             {
@@ -46,7 +44,7 @@ namespace VesselEncounter.UI.MainMenu
             }
         }
 
-        public void OnRegionListUpdated(object obj)
+        public void OnRegionListUpdated()
         {
             XDebug.Log("Updating Region List", XDebug.Mask.MainMenu, XDebug.Color.Yellow);
             List<string> options = new List<string>();
@@ -76,7 +74,7 @@ namespace VesselEncounter.UI.MainMenu
             GameManager.Instance.CreateOrJoinRoom();
         }
 
-        public void OnConnectedToBestRegion(params object[] obj)
+        public void OnConnectedToBestRegion()
         {
             RegionListDropdown.value = NetworkData.Instance.GetBestRegionIndex();
             InputManager.Instance.ActivateInput(true);

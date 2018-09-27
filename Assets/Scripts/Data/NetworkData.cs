@@ -12,7 +12,6 @@ namespace VesselEncounter
         private List<Region> Regions = new List<Region>();
         public Region BestRegion;
         public List<RoomInfo> RoomList { get; internal set; }
-        public Room CurrentRoom;
 
         public void UpdateRegionList(List<Region> regions)
         {
@@ -30,12 +29,12 @@ namespace VesselEncounter
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnConnectedToMaster.EventAction += UpdateBestRegion;
+            MyEventManager.Instance.OnConnectedToMaster.EventActionVoid += UpdateBestRegion;
         }
 
         private void OnDisable()
         {
-            MyEventManager.Instance.OnConnectedToMaster.EventAction -= UpdateBestRegion;
+            MyEventManager.Instance.OnConnectedToMaster.EventActionVoid -= UpdateBestRegion;
         }
 
         public List<Region> GetRegionList()
@@ -58,7 +57,7 @@ namespace VesselEncounter
             //MainMenu.Instance.UpdateRegionList();
         }
 
-        public void UpdateBestRegion(params object[] obj)
+        public void UpdateBestRegion()
         {
             Region bestRegion = PhotonNetwork.NetworkingClient.RegionHandler.BestRegion;
             if (bestRegion != null)

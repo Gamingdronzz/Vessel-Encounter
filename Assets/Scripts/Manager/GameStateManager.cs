@@ -10,6 +10,7 @@ namespace VesselEncounter
         {
             Splash,
             MainMenu,
+            WaitingScene,
             Game,
             PauseMenu,
             ResultScreen,

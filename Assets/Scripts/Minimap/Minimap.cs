@@ -30,18 +30,18 @@ namespace VesselEncounter
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnGameStateUpdated.EventAction += OnGameStateUpdated;
+            MyEventManager.Instance.OnGameStateUpdated.EventActionVoid += OnGameStateUpdated;
         }
 
         private void OnDisable()
         {
-            MyEventManager.Instance.OnGameStateUpdated.EventAction -= OnGameStateUpdated;
+            MyEventManager.Instance.OnGameStateUpdated.EventActionVoid -= OnGameStateUpdated;
         }
 
-        public void OnGameStateUpdated(object obj)
+        public void OnGameStateUpdated()
         {
             XDebug.Log("Game state updated", XDebug.Mask.MiniMap);
-            if (GameStateManager.Instance.GetCurrentGameState() == GameStateManager.GameState.Game)
+            if (GameStateManager.Instance.GetCurrentGameState() == GameStateManager.GameState.WaitingScene)
             {
                 ShipTransform = GameData.Instance.PlayerGO.transform;
                 XDebug.Log("Ship transform attached", XDebug.Mask.MiniMap);

@@ -4,16 +4,19 @@ using UnityEngine;
 using TMPro;
 using VesselEncounter.Data;
 using Photon.Pun;
+using Photon.Realtime;
+using System;
 
-namespace VesselEncounter {
+namespace VesselEncounter
+{
     public class WaitSceneController : MonoBehaviour
     {
-        GameObject Player;
+        private GameObject Player;
         private WaitForSeconds seconds = new WaitForSeconds(1f);
-        public TextMeshProUGUI CountDown;
+        public TextMeshProUGUI CountDown, PlayerCount, MyPlayerName;
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             int countdownValue = GameData.Instance.MatchWaitTime;
             XDebug.Log("New Wait Time = " + countdownValue);
@@ -22,12 +25,31 @@ namespace VesselEncounter {
             Player = PhotonNetwork.Instantiate("Player_Ship", new Vector3(0, 0, 0), Quaternion.identity, 0);
             GameData.Instance.PlayerGO = Player;
             DontDestroyOnLoad(Player);
+            OnJoinedRoom(PhotonNetwork.LocalPlayer);
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
+        }
 
+        private void UpdatePlayerCount()
+        {
+            PlayerCount.text = "Players in Room\n" + PhotonNetwork.CurrentRoom.PlayerCount + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
+        }
+
+        private void OnEnable()
+        {
+            MyEventManager.Instance.OnPlayerJoined.EventActionVoid += UpdatePlayerCount;
+            MyEventManager.Instance.OnPlayerLeft.EventActionVoid += UpdatePlayerCount;
+            MyEventManager.Instance.OnGamePlayConditionsMet.EventActionVoid += OnGamePlayConditionsMet;
+        }
+
+        private void OnDisable()
+        {
+            MyEventManager.Instance.OnPlayerJoined.EventActionVoid -= UpdatePlayerCount;
+            MyEventManager.Instance.OnPlayerLeft.EventActionVoid -= UpdatePlayerCount;
+            MyEventManager.Instance.OnGamePlayConditionsMet.EventActionVoid -= OnGamePlayConditionsMet;
         }
 
         private IEnumerator StartCountdown(int value)
@@ -38,6 +60,16 @@ namespace VesselEncounter {
                 yield return seconds;
             }
             MyEventManager.Instance.OnGamePlayConditionsMet.Dispatch();
+        }
+
+        public void OnJoinedRoom(Player player)
+        {
+            MyPlayerName.text = player.NickName + " == " + player.UserId;
+        }
+
+        private void OnGamePlayConditionsMet()
+        {
+            PhotonNetwork.Destroy(GameData.Instance.PlayerGO);
         }
     }
 }

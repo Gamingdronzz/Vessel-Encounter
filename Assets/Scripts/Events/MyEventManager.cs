@@ -14,5 +14,7 @@ namespace VesselEncounter
         public MyEvent OnGameStateUpdated = new MyEvent();
         public MyEvent OnGamePlayConditionsMet = new MyEvent();
         public MyEvent OnCreatedOrJoinedRoom = new MyEvent();
+        public MyEvent OnPlayerJoined = new MyEvent();
+        public MyEvent OnPlayerLeft = new MyEvent();
     }
 }

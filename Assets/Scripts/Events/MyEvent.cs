@@ -6,10 +6,10 @@ namespace VesselEncounter
 {
     public class MyEvent
     {
-        public delegate void eventAction(params object[] obj);
+        //public delegate void eventAction(params object[] obj);
 
-        //Int Action Event
-        public event eventAction EventAction;
+        ////Int Action Event
+        //public event eventAction EventAction;
 
         public delegate void intAction(int value);
 
@@ -20,13 +20,17 @@ namespace VesselEncounter
 
         public delegate void stringAction(string value);
 
-        public void Dispatch(params object[] obj)
-        {
-            if (EventAction != null)
-                EventAction(obj);
-            else
-                XDebug.Log("Event is Null\nPlease Initialize event first", XDebug.Mask.MyEvent, XDebug.Color.Red);
-        }
+        public event voidAction EventActionVoid;
+
+        public delegate void voidAction();
+
+        //public void Dispatch(params object[] obj)
+        //{
+        //    if (EventAction != null)
+        //        EventAction(obj);
+        //    else
+        //        XDebug.Log("Event is Null\nPlease Initialize event first", XDebug.Mask.MyEvent, XDebug.Color.Red);
+        //}
 
         public void Dispatch(int value)
         {
@@ -44,14 +48,16 @@ namespace VesselEncounter
                 XDebug.Log("Event is Null\nPlease Initialize event first", XDebug.Mask.MyEvent, XDebug.Color.Red);
         }
 
-        public MyEvent()
+        public void Dispatch()
         {
+            if (EventActionVoid != null)
+                EventActionVoid();
+            else
+                XDebug.Log("Event is Null\nPlease Initialize event first", XDebug.Mask.MyEvent, XDebug.Color.Red);
         }
 
-        public MyEvent(eventAction eventAction)
-
+        public MyEvent()
         {
-            EventAction = eventAction;
         }
     }
 }

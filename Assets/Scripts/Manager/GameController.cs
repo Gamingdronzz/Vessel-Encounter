@@ -10,7 +10,7 @@ namespace VesselEncounter.Game
     {
         private void Start()
         {
-            XDebug.Log("Loading Game Scene .Players in room = " + NetworkData.Instance.CurrentRoom.PlayerCount);
+            XDebug.Log("Loading Game Scene .Players in room = " + PhotonNetwork.CurrentRoom.PlayerCount);
             MyEventManager.Instance.OnPlayerNameChanged.Dispatch(PhotonNetwork.LocalPlayer.NickName.ToString());
             GameStateManager.Instance.UpdateGameState(GameStateManager.GameState.Game);
         }
