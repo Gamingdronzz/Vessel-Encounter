@@ -21,15 +21,17 @@ namespace VesselEncounter
         public override void OnEnable()
         {
             base.OnEnable();
-            MyEventManager.Instance.OnGameWaitTimeOver.EventAction += OnGameWaitTimeOver;
-
+            MyEventManager.Instance.OnGamePlayConditionsMet.EventAction += OnGamePlayConditionsMet;
+            MyEventManager.Instance.OnCreatedOrJoinedRoom.EventAction += OnCreatedOrJoinedRoom;
         }
 
         public override void OnDisable()
         {
             base.OnEnable();
-            MyEventManager.Instance.OnGameWaitTimeOver.EventAction -= OnGameWaitTimeOver;
+            MyEventManager.Instance.OnGamePlayConditionsMet.EventAction -= OnGamePlayConditionsMet;
+            MyEventManager.Instance.OnCreatedOrJoinedRoom.EventAction -= OnCreatedOrJoinedRoom;
         }
+
 
         /// <summary>
         /// Connect to the Photon Server
@@ -180,18 +182,27 @@ namespace VesselEncounter
                 XDebug.Log("Joined Room Creation Time - " + (int)room.CustomProperties[RoomPropertyKeys.Key_RoomCreateTime], XDebug.Mask.GameManager, null);
                 NetworkData.Instance.CurrentRoom = room;
                 GameData.Instance.MatchWaitTime = (int)room.CustomProperties[RoomPropertyKeys.Key_MatchWaitTime];
-                MyEventManager.Instance.OnLoadingFinished.Dispatch();
+                MyEventManager.Instance.OnCreatedOrJoinedRoom.Dispatch();
                 //SceneManager.Instance.LoadScene(SceneManager.Scene.Game, UnityEngine.SceneManagement.LoadSceneMode.Single);
             }
+        }
+
+        public void OnCreatedOrJoinedRoom(object obj)
+        {
+            XDebug.Log("Loading finished...Waiting Scene will be loaded now", XDebug.Mask.MainMenu);
+            SceneManager.Instance.LoadScene(SceneManager.Scene.WaitScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             XDebug.Log("On Player Enter Room - " + newPlayer.NickName, XDebug.Mask.GameManager, XDebug.Color.Green);
+            if (PhotonNetwork.CurrentRoom.PlayerCount == GameData.Instance.MaxPlayers)
+                MyEventManager.Instance.OnGamePlayConditionsMet.Dispatch();
         }
 
-        public void OnGameWaitTimeOver(object obj)
+        public void OnGamePlayConditionsMet(object obj)
         {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
             if (PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.LoadLevel(SceneManager.Scene.Game.ToString());

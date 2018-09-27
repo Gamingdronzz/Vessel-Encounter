@@ -40,7 +40,8 @@ namespace VesselEncounter
         {
             Splash,
             MainMenu,
-            Game
+            Game,
+            WaitScene
         }
     }
 }

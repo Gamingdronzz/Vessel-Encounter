@@ -29,7 +29,7 @@ namespace VesselEncounter.UI.MainMenu
         {
             MyEventManager.Instance.OnRegionListUpdated.EventAction += OnRegionListUpdated;
             MyEventManager.Instance.OnConnectedToBestRegion.EventAction += OnConnectedToBestRegion;
-            MyEventManager.Instance.OnLoadingFinished.EventAction += OnLoadingFinished;
+          
         }
 
         private void OnDisable()
@@ -38,7 +38,7 @@ namespace VesselEncounter.UI.MainMenu
             {
                 MyEventManager.Instance.OnRegionListUpdated.EventAction -= OnRegionListUpdated;
                 MyEventManager.Instance.OnConnectedToBestRegion.EventAction -= OnConnectedToBestRegion;
-                MyEventManager.Instance.OnLoadingFinished.EventAction -= OnLoadingFinished;
+               
             }
             catch (NullReferenceException nre)
             {
@@ -67,12 +67,6 @@ namespace VesselEncounter.UI.MainMenu
             //PhotonNetwork.Disconnect();
             //PhotonNetwork.ConnectToRegion(Region);
             XDebug.Log("Connecting to - " + Region);
-        }
-
-        public void OnLoadingFinished(object obj)
-        {
-            XDebug.Log("Loading finished...Waiting Scene will be loaded now", XDebug.Mask.MainMenu);
-            //Load Waiting Scene
         }
 
         public void StartMatchMaking()
