@@ -18,6 +18,7 @@ namespace VesselEncounter
         // Use this for initialization
         private void Start()
         {
+            GameStateManager.Instance.UpdateGameState(GameStateManager.GameState.WaitingScene);
             int countdownValue = GameData.Instance.MatchWaitTime;
             XDebug.Log("New Wait Time = " + countdownValue);
             if (CountDown != null)
@@ -25,6 +26,7 @@ namespace VesselEncounter
             Player = PhotonNetwork.Instantiate("Player_Ship", new Vector3(0, 0, 0), Quaternion.identity, 0);
             GameData.Instance.PlayerGO = Player;
             //DontDestroyOnLoad(Player);
+            OnJoinedRoom(PhotonNetwork.LocalPlayer);
             OnJoinedRoom(PhotonNetwork.LocalPlayer);
         }
 
@@ -69,7 +71,6 @@ namespace VesselEncounter
 
         private void OnGamePlayConditionsMet()
         {
-            PhotonNetwork.Destroy(GameData.Instance.PlayerGO);
         }
     }
 }

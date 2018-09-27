@@ -13,8 +13,8 @@ namespace VesselEncounter.Game
             XDebug.Log("Loading Game Scene .Players in room = " + PhotonNetwork.CurrentRoom.PlayerCount);
             GameObject Player = PhotonNetwork.Instantiate("Player_Ship", new Vector3(0, 0, 0), Quaternion.identity, 0);
             GameData.Instance.PlayerGO = Player;
-            MyEventManager.Instance.OnPlayerNameChanged.Dispatch(PhotonNetwork.LocalPlayer.NickName.ToString());
             GameStateManager.Instance.UpdateGameState(GameStateManager.GameState.Game);
+            MyEventManager.Instance.OnPlayerNameChanged.Dispatch(PhotonNetwork.LocalPlayer.NickName.ToString());
             XDebug.Log("My Player Name = " + PhotonNetwork.LocalPlayer.NickName + " ID = " + PhotonNetwork.LocalPlayer.UserId);
         }
     }
