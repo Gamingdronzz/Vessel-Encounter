@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using VesselEncounter.Data;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
+using System.Collections;
 
 namespace VesselEncounter
 {
@@ -18,15 +17,29 @@ namespace VesselEncounter
         // Use this for initialization
         private void Start()
         {
+            PhotonNetwork.FetchServerTimestamp();
             GameStateManager.Instance.UpdateGameState(GameStateManager.GameState.WaitingScene);
-            int countdownValue = GameData.Instance.MatchWaitTime;
-            XDebug.Log("New Wait Time = " + countdownValue);
-            if (CountDown != null)
-                StartCoroutine(StartCountdown(countdownValue));
             Player = PhotonNetwork.Instantiate("Player_Ship", new Vector3(0, 0, 0), Quaternion.identity, 0);
             GameData.Instance.PlayerGO = Player;
             OnJoinedRoom(PhotonNetwork.LocalPlayer);
             UpdatePlayerCount();
+            StartCoroutine(StartCountdown((int)PhotonNetwork.CurrentRoom.CustomProperties[RoomPropertyKeys.Key_MatchWaitTime]));
+        }
+
+        private IEnumerator StartCountdown(int value)
+        {
+            for (int i = value; i > 0; i--)
+            {
+                CountDown.text = i.ToString();
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    ExitGames.Client.Photon.Hashtable hashtable = PhotonNetwork.CurrentRoom.CustomProperties;
+                    hashtable[RoomPropertyKeys.Key_MatchWaitTime] = i;
+                    PhotonNetwork.CurrentRoom.SetCustomProperties(hashtable);
+                }
+                yield return seconds;
+            }
+            MyEventManager.Instance.OnGamePlayConditionsMet.Dispatch();
         }
 
         // Update is called once per frame
@@ -51,16 +64,6 @@ namespace VesselEncounter
             MyEventManager.Instance.OnPlayerJoined.EventActionVoid -= UpdatePlayerCount;
             MyEventManager.Instance.OnPlayerLeft.EventActionVoid -= UpdatePlayerCount;
             MyEventManager.Instance.OnGamePlayConditionsMet.EventActionVoid -= OnGamePlayConditionsMet;
-        }
-
-        private IEnumerator StartCountdown(int value)
-        {
-            for (int i = value; i > 0; i--)
-            {
-                CountDown.text = i.ToString();
-                yield return seconds;
-            }
-            MyEventManager.Instance.OnGamePlayConditionsMet.Dispatch();
         }
 
         public void OnJoinedRoom(Player player)
