@@ -7,6 +7,7 @@ using VesselEncounter.Data;
 using TMPro;
 using System;
 using UnityEngine.EventSystems;
+using VesselEncounter.Networking;
 
 namespace VesselEncounter.UI.MainMenu
 {
@@ -77,6 +78,14 @@ namespace VesselEncounter.UI.MainMenu
         {
             RegionListDropdown.value = NetworkData.Instance.GetBestRegionIndex();
             InputManager.Instance.ActivateInput(true);
+
+            MyWebRequest.Instance.MakeWebRequest("https://jsonplaceholder.typicode.com/todos/1", OnComplete, "", MyWebRequest.RequestType.POST);
+            //StartCoroutine(MyWebRequest.Instance.GetRequest("https://jsonplaceholder.typicode.com/todos/1"));
+        }
+
+        private void OnComplete(string reponse)
+        {
+            XDebug.Log("Request Result = " + reponse);
         }
     }
 }
