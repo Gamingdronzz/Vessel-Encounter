@@ -30,7 +30,6 @@ namespace VesselEncounter.UI.MainMenu
             MyEventManager.Instance.OnRegionListUpdated.EventAction += OnRegionListUpdated;
             MyEventManager.Instance.OnConnectedToBestRegion.EventAction += OnConnectedToBestRegion;
             MyEventManager.Instance.OnLoadingFinished.EventAction += OnLoadingFinished;
-
         }
 
         private void OnDisable()
@@ -40,7 +39,6 @@ namespace VesselEncounter.UI.MainMenu
                 MyEventManager.Instance.OnRegionListUpdated.EventAction -= OnRegionListUpdated;
                 MyEventManager.Instance.OnConnectedToBestRegion.EventAction -= OnConnectedToBestRegion;
                 MyEventManager.Instance.OnLoadingFinished.EventAction -= OnLoadingFinished;
-
             }
             catch (NullReferenceException nre)
             {
@@ -71,7 +69,8 @@ namespace VesselEncounter.UI.MainMenu
             XDebug.Log("Connecting to - " + Region);
         }
 
-        public void OnLoadingFinished(object obj) {
+        public void OnLoadingFinished(object obj)
+        {
             XDebug.Log("Loading finished...Waiting Scene will be loaded now", XDebug.Mask.MainMenu);
             //Load Waiting Scene
         }
@@ -83,20 +82,21 @@ namespace VesselEncounter.UI.MainMenu
             GameManager.Instance.CreateOrJoinRoom();
         }
 
-
-
         public void OnConnectedToBestRegion(params object[] obj)
         {
             RegionListDropdown.value = NetworkData.Instance.GetBestRegionIndex();
             InputManager.Instance.ActivateInput(true);
 
-            MyWebRequest.Instance.MakeWebRequest("https://jsonplaceholder.typicode.com/todos/1", OnComplete, "", MyWebRequest.RequestType.POST);
+            MyWebRequest.Instance.MakeWebRequest("https://jsonplaceholder.typicode.com/todos/1", OnSuccess, OnFailure, "");
             //StartCoroutine(MyWebRequest.Instance.GetRequest("https://jsonplaceholder.typicode.com/todos/1"));
         }
 
-        private void OnComplete(string reponse)
+        private void OnFailure(string error)
         {
-            XDebug.Log("Request Result = " + reponse);
+        }
+
+        private void OnSuccess(string response)
+        {
         }
     }
 }

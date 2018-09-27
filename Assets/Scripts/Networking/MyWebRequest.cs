@@ -8,116 +8,112 @@ namespace VesselEncounter.Networking
 {
     public class MyWebRequest : SingletonMonoBehaviour<MyWebRequest>
     {
-        private bool requestFinished;
-        private bool requestErrorOccurred;
-
         public enum RequestType
         {
             GET,
             POST
         }
 
-        public void MakeWebRequest(string url, Action<string> action, string bodyParams = "", RequestType requestType = RequestType.POST)
+        private enum RequestState
+        {
+            INIT,
+            PROCESSED,
+            FAILURE,
+            SUCCESS
+        }
+
+        public void MakeWebRequest(string url, Action<string> OnSuccess, Action<string> OnFailure, string bodyParams = "", RequestType requestType = RequestType.GET)
         {
             if (requestType == RequestType.POST)
             {
-                PostRequest(url, bodyParams, action);
+                StartCoroutine(PostRequest(url, bodyParams, OnSuccess, OnFailure));
             }
             else
             {
-                GetRequest(url, action);
+                StartCoroutine(GetRequest(url, OnSuccess, OnFailure));
             }
         }
 
-        public IEnumerator GetRequest(string uri, Action<string> action)
+        public IEnumerator GetRequest(string uri, Action<string> OnSuccess, Action<string> OnFailure)
         {
-            requestFinished = false;
-            requestErrorOccurred = false;
+            RequestState requestState = RequestState.INIT;
 
             UnityWebRequest request = UnityWebRequest.Get(uri);
             yield return request.SendWebRequest();
 
-            requestFinished = true;
+            requestState = RequestState.PROCESSED;
             if (request.isNetworkError)
             {
-                Debug.Log("Something went wrong, and returned error: " + request.error);
-                requestErrorOccurred = true;
+                requestState = RequestState.FAILURE;
             }
             else
             {
-                // Show results as text
-                Debug.Log(request.downloadHandler.text);
-
                 if (request.responseCode == 200)
                 {
-                    Debug.Log("Request finished successfully!");
+                    requestState = RequestState.SUCCESS;
                 }
                 else if (request.responseCode == 401) // an occasional unauthorized error
                 {
-                    Debug.Log("Error 401: Unauthorized. Resubmitted request!");
-                    StartCoroutine(GetRequest(uri, action));
-                    requestErrorOccurred = true;
+                    requestState = RequestState.FAILURE;
+                    StartCoroutine(GetRequest(uri, OnSuccess, OnFailure));
                 }
                 else
                 {
-                    Debug.Log("Request failed (status:" + request.responseCode + ")");
-                    requestErrorOccurred = true;
+                    requestState = RequestState.FAILURE;
                 }
 
-                if (!requestErrorOccurred)
-                {
-                    yield return null;
-                    // process results
-                    action(request.downloadHandler.text);
-                }
+                ProcessResult(requestState, request, OnSuccess, OnFailure);
             }
         }
 
-        public IEnumerator PostRequest(string url, string bodyJsonString, Action<string> action)
+        private void ProcessResult(RequestState requestState, UnityWebRequest request, Action<string> OnSuccess, Action<string> OnFailure)
         {
-            requestFinished = false;
-            requestErrorOccurred = false;
+            if (requestState == RequestState.FAILURE)
+            {
+                XDebug.LogError(request.error, XDebug.Mask.MyWebRequest);
+                OnFailure(request.error);
+            }
+            else if (requestState == RequestState.SUCCESS)
+            {
+                XDebug.Log("API Response", XDebug.Mask.MyWebRequest, XDebug.Color.Blue);
+                XDebug.Log(request.downloadHandler.text, XDebug.Mask.MyWebRequest, XDebug.Color.Blue);
+                OnSuccess(request.downloadHandler.text);
+            }
+        }
 
+        public IEnumerator PostRequest(string url, string bodyJsonString, Action<string> OnSuccess, Action<string> OnFailure)
+        {
+            RequestState requestState = RequestState.INIT;
             var request = new UnityWebRequest(url, "POST");
             byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
             request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
-
             yield return request.SendWebRequest();
-            requestFinished = true;
+            requestState = RequestState.PROCESSED;
 
             if (request.isNetworkError)
             {
-                Debug.Log("Something went wrong, and returned error: " + request.error);
-                requestErrorOccurred = true;
+                requestState = RequestState.FAILURE;
             }
             else
             {
-                Debug.Log("Response: " + request.downloadHandler.text);
-
                 if (request.responseCode == 201)
                 {
-                    Debug.Log("Request finished successfully! New User created successfully.");
+                    requestState = RequestState.SUCCESS;
                 }
                 else if (request.responseCode == 401)
                 {
-                    Debug.Log("Error 401: Unauthorized. Resubmitted request!");
-                    StartCoroutine(PostRequest(url, bodyJsonString, action));
-                    requestErrorOccurred = true;
+                    requestState = RequestState.FAILURE;
+                    StartCoroutine(PostRequest(url, bodyJsonString, OnSuccess, OnFailure));
                 }
                 else
                 {
-                    Debug.Log("Request failed (status:" + request.responseCode + ").");
-                    requestErrorOccurred = true;
-                }
-
-                if (!requestErrorOccurred)
-                {
-                    yield return null;
-                    // process results
+                    requestState = RequestState.FAILURE;
                 }
             }
+
+            ProcessResult(requestState, request, OnSuccess, OnFailure);
         }
     }
 }

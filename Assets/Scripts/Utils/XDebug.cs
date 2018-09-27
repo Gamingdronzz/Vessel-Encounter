@@ -22,17 +22,19 @@ namespace VesselEncounter
             ShipCompass,
             GameStateManager,
             MiniMap,
-            GameHUD
+            GameHUD,
+            MyWebRequest
         }
 
         //Add Color Names here, should be same as colors defined in Color Class
         public enum Color
         {
-            Red,
-            Green,
-            Blue,
-            Yellow,
-            Cyan
+            Red, // Use Red For Errors,Future Implementation Features
+            Green, // Succesful Finishing of an offline task
+            Yellow, // Information during a task
+            Cyan,// Web Requests
+            Magenta,
+            Blue
         }
 
         private static List<Mask?> enabledMasks = new List<Mask?>();
@@ -49,7 +51,7 @@ namespace VesselEncounter
         {
             if (CanLog(mask))
                 if (color != null)
-                    Debug.Log("<color='" + color.ToString() + "'>" + log + "</color>");
+                    Debug.Log("<color='" + color.ToString().ToLower() + "'> " + log + "</color>");
                 else
                     Debug.Log(log);
 
@@ -98,7 +100,9 @@ namespace VesselEncounter
                 Mask.ShipCompass,
                 Mask.GameStateManager,
                 Mask.MiniMap,
-                Mask.GameHUD
+                Mask.GameHUD,
+                Mask.MyWebRequest
+
                 );
         }
 
