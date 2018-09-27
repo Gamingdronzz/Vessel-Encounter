@@ -29,6 +29,8 @@ namespace VesselEncounter.UI.MainMenu
         {
             MyEventManager.Instance.OnRegionListUpdated.EventAction += OnRegionListUpdated;
             MyEventManager.Instance.OnConnectedToBestRegion.EventAction += OnConnectedToBestRegion;
+            MyEventManager.Instance.OnLoadingFinished.EventAction += OnLoadingFinished;
+
         }
 
         private void OnDisable()
@@ -37,6 +39,8 @@ namespace VesselEncounter.UI.MainMenu
             {
                 MyEventManager.Instance.OnRegionListUpdated.EventAction -= OnRegionListUpdated;
                 MyEventManager.Instance.OnConnectedToBestRegion.EventAction -= OnConnectedToBestRegion;
+                MyEventManager.Instance.OnLoadingFinished.EventAction -= OnLoadingFinished;
+
             }
             catch (NullReferenceException nre)
             {
@@ -67,12 +71,19 @@ namespace VesselEncounter.UI.MainMenu
             XDebug.Log("Connecting to - " + Region);
         }
 
+        public void OnLoadingFinished(object obj) {
+            XDebug.Log("Loading finished...Waiting Scene will be loaded now", XDebug.Mask.MainMenu);
+            //Load Waiting Scene
+        }
+
         public void StartMatchMaking()
         {
             GameData.Instance.MaxPlayers = 4;
             GameData.Instance.MatchWaitTime = 30;
             GameManager.Instance.CreateOrJoinRoom();
         }
+
+
 
         public void OnConnectedToBestRegion(params object[] obj)
         {

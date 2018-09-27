@@ -22,6 +22,7 @@ namespace VesselEncounter
         {
             base.OnEnable();
             MyEventManager.Instance.OnGameWaitTimeOver.EventAction += OnGameWaitTimeOver;
+
         }
 
         public override void OnDisable()
@@ -179,7 +180,7 @@ namespace VesselEncounter
                 XDebug.Log("Joined Room Creation Time - " + (int)room.CustomProperties[RoomPropertyKeys.Key_RoomCreateTime], XDebug.Mask.GameManager, null);
                 NetworkData.Instance.CurrentRoom = room;
                 GameData.Instance.MatchWaitTime = (int)room.CustomProperties[RoomPropertyKeys.Key_MatchWaitTime];
-
+                MyEventManager.Instance.OnLoadingFinished.Dispatch();
                 //SceneManager.Instance.LoadScene(SceneManager.Scene.Game, UnityEngine.SceneManagement.LoadSceneMode.Single);
             }
         }

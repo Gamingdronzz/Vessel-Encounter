@@ -13,5 +13,6 @@ namespace VesselEncounter
         public MyEvent OnPlayerNameChanged = new MyEvent();
         public MyEvent OnGameStateUpdated = new MyEvent();
         public MyEvent OnGameWaitTimeOver = new MyEvent();
+        public MyEvent OnLoadingFinished = new MyEvent();
     }
 }
