@@ -189,17 +189,6 @@ namespace VesselEncounter
         {
             XDebug.Log("Loading finished...Waiting Scene will be loaded now", XDebug.Mask.MainMenu);
             SceneManager.Instance.LoadScene(SceneManager.Scene.WaitScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
-            StartCoroutine(StartCountdown(GameData.Instance.MatchWaitTime));
-        }
-
-        private IEnumerator StartCountdown(int value)
-        {
-            for (int i = value; i > 0; i--)
-            {
-                CountDown.text = i.ToString();
-                yield return seconds;
-            }
-            MyEventManager.Instance.OnGamePlayConditionsMet.Dispatch();
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
