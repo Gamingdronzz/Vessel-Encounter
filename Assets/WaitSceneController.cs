@@ -34,7 +34,7 @@ namespace VesselEncounter
                 if (PhotonNetwork.IsMasterClient)
                 {
                     ExitGames.Client.Photon.Hashtable hashtable = PhotonNetwork.CurrentRoom.CustomProperties;
-                    hashtable[RoomPropertyKeys.Key_MatchWaitTime] = i;
+                    hashtable[RoomPropertyKeys.Key_MatchWaitTime] = i - 1;
                     PhotonNetwork.CurrentRoom.SetCustomProperties(hashtable);
                 }
                 yield return seconds;
