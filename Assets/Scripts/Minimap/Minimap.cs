@@ -41,7 +41,7 @@ namespace VesselEncounter
         public void OnGameStateUpdated()
         {
             XDebug.Log("Game state updated", XDebug.Mask.MiniMap);
-            if (GameStateManager.Instance.GetCurrentGameState() == GameStateManager.GameState.WaitingScene)
+            if (GameStateManager.Instance.GetCurrentGameState() == GameStateManager.GameState.Game)
             {
                 ShipTransform = GameData.Instance.PlayerGO.transform;
                 XDebug.Log("Ship transform attached", XDebug.Mask.MiniMap);
