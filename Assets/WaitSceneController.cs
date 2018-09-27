@@ -25,9 +25,8 @@ namespace VesselEncounter
                 StartCoroutine(StartCountdown(countdownValue));
             Player = PhotonNetwork.Instantiate("Player_Ship", new Vector3(0, 0, 0), Quaternion.identity, 0);
             GameData.Instance.PlayerGO = Player;
-            //DontDestroyOnLoad(Player);
             OnJoinedRoom(PhotonNetwork.LocalPlayer);
-            OnJoinedRoom(PhotonNetwork.LocalPlayer);
+            UpdatePlayerCount();
         }
 
         // Update is called once per frame
