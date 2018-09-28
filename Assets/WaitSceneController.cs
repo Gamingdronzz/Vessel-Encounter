@@ -5,6 +5,8 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace VesselEncounter
 {
@@ -12,7 +14,7 @@ namespace VesselEncounter
     {
         private GameObject Player;
         private WaitForSeconds seconds = new WaitForSeconds(1f);
-        public TextMeshProUGUI CountDown, PlayerCount,PlayerList;
+        public TextMeshProUGUI CountDown, PlayerCount, PlayerList;
 
         // Use this for initialization
         private void Start()
@@ -48,11 +50,12 @@ namespace VesselEncounter
 
         private void UpdatePlayerCountAndList()
         {
+            ArrayList players = new ArrayList();
             PlayerCount.text = "Players in Room\n" + PhotonNetwork.CurrentRoom.PlayerCount + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
             PlayerList.text = "";
-            foreach (Player p in PhotonNetwork.CurrentRoom.Players.Values)
+            foreach (KeyValuePair<int, Player> keyValPair in PhotonNetwork.CurrentRoom.Players.OrderBy(i => i.Key))
             {
-                    PlayerList.text = PlayerList.text + p.NickName + " Joined\n";
+                PlayerList.text = PlayerList.text + keyValPair.Value.NickName + " Joined\n";
             }
         }
 

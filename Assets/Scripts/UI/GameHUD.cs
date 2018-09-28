@@ -6,6 +6,7 @@ using TMPro;
 using System;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Linq;
 
 namespace VesselEncounter.UI
 {
@@ -53,9 +54,9 @@ namespace VesselEncounter.UI
             if (GameStateManager.Instance.GetCurrentGameState() == GameStateManager.GameState.Game)
             {
                 string s = "Players in Room: ";
-                foreach (Player p in PhotonNetwork.CurrentRoom.Players.Values)
+                foreach (KeyValuePair<int, Player> keyValPair in PhotonNetwork.CurrentRoom.Players.OrderBy(i => i.Key))
                 {
-                    s = s + p.NickName + ",";
+                    s = s + keyValPair.Value.NickName + ",";
                 }
                 PlayerList.text = s.Substring(0, s.Length - 1);
             }
