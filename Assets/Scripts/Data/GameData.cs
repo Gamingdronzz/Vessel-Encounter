@@ -13,7 +13,7 @@ namespace VesselEncounter.Data
         public GameLevelBrackets MinimumSkillLevel;
         public RoomOptions RoomOptions;
         public GameObject PlayerGO;
-
+       
         public int MatchWaitTime { get; internal set; }
 
         public void ResetGameData()

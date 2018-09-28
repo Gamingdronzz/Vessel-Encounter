@@ -12,7 +12,7 @@ namespace VesselEncounter
     {
         private GameObject Player;
         private WaitForSeconds seconds = new WaitForSeconds(1f);
-        public TextMeshProUGUI CountDown, PlayerCount, MyPlayerName;
+        public TextMeshProUGUI CountDown, PlayerCount, MyPlayerName,PlayerList;
 
         // Use this for initialization
         private void Start()
@@ -22,7 +22,7 @@ namespace VesselEncounter
             Player = PhotonNetwork.Instantiate("Player_Ship", new Vector3(0, 0, 0), Quaternion.identity, 0);
             GameData.Instance.PlayerGO = Player;
             OnJoinedRoom(PhotonNetwork.LocalPlayer);
-            UpdatePlayerCount();
+            UpdatePlayerCountAndList();
             StartCoroutine(StartCountdown((int)PhotonNetwork.CurrentRoom.CustomProperties[RoomPropertyKeys.Key_MatchWaitTime]));
         }
 
@@ -47,22 +47,28 @@ namespace VesselEncounter
         {
         }
 
-        private void UpdatePlayerCount()
+        private void UpdatePlayerCountAndList()
         {
             PlayerCount.text = "Players in Room\n" + PhotonNetwork.CurrentRoom.PlayerCount + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
+            PlayerList.text = "";
+            foreach (Player p in PhotonNetwork.CurrentRoom.Players.Values)
+            {
+                if (!p.IsLocal)
+                    PlayerList.text = PlayerList.text + p.NickName + " Joined\n";
+            }
         }
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnPlayerJoined.EventActionVoid += UpdatePlayerCount;
-            MyEventManager.Instance.OnPlayerLeft.EventActionVoid += UpdatePlayerCount;
+            MyEventManager.Instance.OnPlayerJoined.EventActionVoid += UpdatePlayerCountAndList;
+            MyEventManager.Instance.OnPlayerLeft.EventActionVoid += UpdatePlayerCountAndList;
             MyEventManager.Instance.OnGamePlayConditionsMet.EventActionVoid += OnGamePlayConditionsMet;
         }
 
         private void OnDisable()
         {
-            MyEventManager.Instance.OnPlayerJoined.EventActionVoid -= UpdatePlayerCount;
-            MyEventManager.Instance.OnPlayerLeft.EventActionVoid -= UpdatePlayerCount;
+            MyEventManager.Instance.OnPlayerJoined.EventActionVoid -= UpdatePlayerCountAndList;
+            MyEventManager.Instance.OnPlayerLeft.EventActionVoid -= UpdatePlayerCountAndList;
             MyEventManager.Instance.OnGamePlayConditionsMet.EventActionVoid -= OnGamePlayConditionsMet;
         }
 

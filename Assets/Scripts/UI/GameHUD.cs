@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using Photon.Pun;
+using Photon.Realtime;
 
 namespace VesselEncounter.UI
 {
@@ -16,7 +19,7 @@ namespace VesselEncounter.UI
         public GameObject HUDPanelGO;
 
         [SerializeField]
-        private TextMeshProUGUI PlayerName;
+        private TextMeshProUGUI PlayerName, OtherPlayerList;
 
         // Use this for initialization
         private void Start()
@@ -34,11 +37,27 @@ namespace VesselEncounter.UI
         private void OnEnable()
         {
             MyEventManager.Instance.OnPlayerNameChanged.EventActionString += SetPlayerName;
+            MyEventManager.Instance.OnGameStateUpdated.EventActionVoid += ListOtherPlayers;
+            MyEventManager.Instance.OnPlayerLeft.EventActionVoid += ListOtherPlayers;
         }
 
         private void OnDisable()
         {
             MyEventManager.Instance.OnPlayerNameChanged.EventActionString -= SetPlayerName;
+            MyEventManager.Instance.OnGameStateUpdated.EventActionVoid -= ListOtherPlayers;
+            MyEventManager.Instance.OnPlayerLeft.EventActionVoid -= ListOtherPlayers;
+        }
+
+        private void ListOtherPlayers()
+        {
+            string s = "Other Players: ";
+            foreach (Player p in PhotonNetwork.CurrentRoom.Players.Values)
+            {
+                if (!p.IsLocal)
+                    s = s + p.NickName + ",";
+            }
+            OtherPlayerList.text = s.Substring(0, s.Length - 1);
+
         }
 
         private void Reset()
