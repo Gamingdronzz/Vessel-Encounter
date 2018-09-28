@@ -12,7 +12,7 @@ namespace VesselEncounter
     {
         private GameObject Player;
         private WaitForSeconds seconds = new WaitForSeconds(1f);
-        public TextMeshProUGUI CountDown, PlayerCount, MyPlayerName,PlayerList;
+        public TextMeshProUGUI CountDown, PlayerCount,PlayerList;
 
         // Use this for initialization
         private void Start()
@@ -21,7 +21,6 @@ namespace VesselEncounter
             GameStateManager.Instance.UpdateGameState(GameStateManager.GameState.WaitingScene);
             Player = PhotonNetwork.Instantiate("Player_Ship", new Vector3(0, 0, 0), Quaternion.identity, 0);
             GameData.Instance.PlayerGO = Player;
-            OnJoinedRoom(PhotonNetwork.LocalPlayer);
             UpdatePlayerCountAndList();
             StartCoroutine(StartCountdown((int)PhotonNetwork.CurrentRoom.CustomProperties[RoomPropertyKeys.Key_MatchWaitTime]));
         }
@@ -53,7 +52,6 @@ namespace VesselEncounter
             PlayerList.text = "";
             foreach (Player p in PhotonNetwork.CurrentRoom.Players.Values)
             {
-                if (!p.IsLocal)
                     PlayerList.text = PlayerList.text + p.NickName + " Joined\n";
             }
         }
@@ -70,11 +68,6 @@ namespace VesselEncounter
             MyEventManager.Instance.OnPlayerJoined.EventActionVoid -= UpdatePlayerCountAndList;
             MyEventManager.Instance.OnPlayerLeft.EventActionVoid -= UpdatePlayerCountAndList;
             MyEventManager.Instance.OnGamePlayConditionsMet.EventActionVoid -= OnGamePlayConditionsMet;
-        }
-
-        public void OnJoinedRoom(Player player)
-        {
-            MyPlayerName.text = player.NickName + " == " + player.UserId;
         }
 
         private void OnGamePlayConditionsMet()

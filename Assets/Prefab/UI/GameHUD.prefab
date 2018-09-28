@@ -163,7 +163,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1642681037238522
 GameObject:
   m_ObjectHideFlags: 1
@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 222720701849290970}
   - component: {fileID: 114124329153573996}
   m_Layer: 5
-  m_Name: OtherPlayersList
+  m_Name: PlayersList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -246,8 +246,7 @@ MonoBehaviour:
   CompassImage: {fileID: 114902987463798244}
   CrosshairImage: {fileID: 114456401067886254}
   HUDPanelGO: {fileID: 1040375358878736}
-  PlayerName: {fileID: 114661764145094918}
-  OtherPlayerList: {fileID: 114124329153573996}
+  PlayerList: {fileID: 114124329153573996}
 --- !u!114 &114008409967044154
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -678,11 +677,11 @@ MonoBehaviour:
     lineCount: 0
     pageCount: 0
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -896,10 +895,10 @@ RectTransform:
   m_Father: {fileID: 224907892943240832}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -952.9, y: 24.025024}
-  m_SizeDelta: {x: 1030, y: 50}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -0.0009241104, y: 34}
+  m_SizeDelta: {x: 1466.3, y: 68.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224648041787141978
 RectTransform:

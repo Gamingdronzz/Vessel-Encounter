@@ -201,7 +201,7 @@ namespace VesselEncounter
 
         public void OnGamePlayConditionsMet()
         {
-            //PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.CurrentRoom.IsOpen = false;
             if (PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.LoadLevel(SceneManager.Scene.Game.ToString());

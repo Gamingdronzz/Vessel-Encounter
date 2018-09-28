@@ -19,7 +19,7 @@ namespace VesselEncounter.UI
         public GameObject HUDPanelGO;
 
         [SerializeField]
-        private TextMeshProUGUI PlayerName, OtherPlayerList;
+        private TextMeshProUGUI PlayerList;
 
         // Use this for initialization
         private void Start()
@@ -36,28 +36,29 @@ namespace VesselEncounter.UI
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnPlayerNameChanged.EventActionString += SetPlayerName;
-            MyEventManager.Instance.OnGameStateUpdated.EventActionVoid += ListOtherPlayers;
-            MyEventManager.Instance.OnPlayerLeft.EventActionVoid += ListOtherPlayers;
+            //MyEventManager.Instance.OnPlayerNameChanged.EventActionString += SetPlayerName;
+            MyEventManager.Instance.OnGameStateUpdated.EventActionVoid += ListAllPlayers;
+            MyEventManager.Instance.OnPlayerLeft.EventActionVoid += ListAllPlayers;
         }
 
         private void OnDisable()
         {
-            MyEventManager.Instance.OnPlayerNameChanged.EventActionString -= SetPlayerName;
-            MyEventManager.Instance.OnGameStateUpdated.EventActionVoid -= ListOtherPlayers;
-            MyEventManager.Instance.OnPlayerLeft.EventActionVoid -= ListOtherPlayers;
+            //MyEventManager.Instance.OnPlayerNameChanged.EventActionString -= SetPlayerName;
+            MyEventManager.Instance.OnGameStateUpdated.EventActionVoid -= ListAllPlayers;
+            MyEventManager.Instance.OnPlayerLeft.EventActionVoid -= ListAllPlayers;
         }
 
-        private void ListOtherPlayers()
+        private void ListAllPlayers()
         {
-            string s = "Other Players: ";
-            foreach (Player p in PhotonNetwork.CurrentRoom.Players.Values)
+            if (GameStateManager.Instance.GetCurrentGameState() == GameStateManager.GameState.Game)
             {
-                if (!p.IsLocal)
+                string s = "Players in Room: ";
+                foreach (Player p in PhotonNetwork.CurrentRoom.Players.Values)
+                {
                     s = s + p.NickName + ",";
+                }
+                PlayerList.text = s.Substring(0, s.Length - 1);
             }
-            OtherPlayerList.text = s.Substring(0, s.Length - 1);
-
         }
 
         private void Reset()
@@ -68,10 +69,10 @@ namespace VesselEncounter.UI
             //HUDPanelGO = GameObject.Find("HUDPanel");
         }
 
-        public void SetPlayerName(string playerName)
-        {
-            XDebug.Log("Setting Player Name", XDebug.Mask.GameHUD);
-            PlayerName.text = playerName;
-        }
+        //public void SetPlayerName(string playerName)
+        //{
+        //    XDebug.Log("Setting Player Name", XDebug.Mask.GameHUD);
+        //    PlayerName.text = playerName;
+        //}
     }
 }
