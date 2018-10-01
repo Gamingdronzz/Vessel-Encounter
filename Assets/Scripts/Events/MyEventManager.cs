@@ -16,5 +16,6 @@ namespace VesselEncounter
         public MyEvent OnCreatedOrJoinedRoom = new MyEvent();
         public MyEvent OnPlayerJoined = new MyEvent();
         public MyEvent OnPlayerLeft = new MyEvent();
+        public MyEvent OnLanguageChanged = new MyEvent();
     }
 }

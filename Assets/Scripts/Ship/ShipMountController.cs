@@ -127,8 +127,7 @@ namespace VesselEncounter
         //Instantiates and stores it in Mounted Item List
         private void MountItemOnShip(int index, int mountID, Transform mountPosition)
         {
-            GameObject go = Instantiate(MountItemManager.Instance.MountScriptableObject[mountID].MountGO,`
-
+            GameObject go = Instantiate(MountItemManager.Instance.MountScriptableObject[mountID].MountGO,
                 mountPosition.position,
                 mountPosition.rotation,//MountItemManager.INSTANCE.MountScriptableObject[mountID].MountGameObject.transform.rotation,
                 transform);

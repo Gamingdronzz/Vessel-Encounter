@@ -41,7 +41,8 @@ namespace VesselEncounter
             Splash,
             MainMenu,
             Game,
-            WaitScene
+            WaitScene,
+            SelectLanguage
         }
     }
 }

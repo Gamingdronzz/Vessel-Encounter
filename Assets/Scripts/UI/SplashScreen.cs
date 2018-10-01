@@ -49,5 +49,10 @@ namespace VesselEncounter.UI.SplashScreen
             m_IsLoadingMainMenu = true;
             SceneManager.Instance.LoadScene(SceneManager.Scene.MainMenu, UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
+
+        public void LoadChangeLanguageMenu()
+        {
+            SceneManager.Instance.LoadScene(SceneManager.Scene.SelectLanguage, UnityEngine.SceneManagement.LoadSceneMode.Single);
+        }
     }
 }

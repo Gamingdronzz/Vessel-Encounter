@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WaitScene.unity
     guid: d4c882465af130a4e8bdc9fe7a11bc39
+  - enabled: 1
+    path: Assets/Scenes/SelectLanguage.unity
+    guid: babc60b18da22cc4ab55227c0500155b
   m_configObjects: {}
