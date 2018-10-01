@@ -56,12 +56,12 @@ namespace VesselEncounter
         /// </summary>
         public void MountGameObject(int mountID)
         {
-            switch (MountItemManager.INSTANCE.MountScriptableObject[mountID].MountPosition.ToString())
+            switch (MountItemManager.Instance.MountScriptableObject[mountID].MountPosition.ToString())
             {
                 case "Top":
                     if (m_IsTopMounted)
                     {
-                        if (m_MountedItemList[TagManager.TOP_POSITION_TAG].MountedItemPriority < (int)MountItemManager.INSTANCE.MountScriptableObject[mountID].MountPriority)
+                        if (m_MountedItemList[TagManager.TOP_POSITION_TAG].MountedItemPriority < (int)MountItemManager.Instance.MountScriptableObject[mountID].MountPriority)
                         {
                             UnMountItemOnShip(TagManager.TOP_POSITION_TAG);
                             MountItemOnShip(TagManager.TOP_POSITION_TAG, mountID, TopPosition.transform);
@@ -77,7 +77,7 @@ namespace VesselEncounter
                 case "Bottom":
                     if (m_IsBottomMounted)
                     {
-                        if (m_MountedItemList[TagManager.BOTTOM_POSITION_TAG].MountedItemPriority < (int)MountItemManager.INSTANCE.MountScriptableObject[mountID].MountPriority)
+                        if (m_MountedItemList[TagManager.BOTTOM_POSITION_TAG].MountedItemPriority < (int)MountItemManager.Instance.MountScriptableObject[mountID].MountPriority)
                         {
                             UnMountItemOnShip(TagManager.BOTTOM_POSITION_TAG);
                             MountItemOnShip(TagManager.BOTTOM_POSITION_TAG, mountID, BottoPosition.transform);
@@ -93,7 +93,7 @@ namespace VesselEncounter
                 case "Front":
                     if (m_IsFrontMounted)
                     {
-                        if (m_MountedItemList[TagManager.FRONT_POSITION_TAG].MountedItemPriority < (int)MountItemManager.INSTANCE.MountScriptableObject[mountID].MountPriority)
+                        if (m_MountedItemList[TagManager.FRONT_POSITION_TAG].MountedItemPriority < (int)MountItemManager.Instance.MountScriptableObject[mountID].MountPriority)
                         {
                             UnMountItemOnShip(TagManager.FRONT_POSITION_TAG);
                             MountItemOnShip(TagManager.FRONT_POSITION_TAG, mountID, FrontPosition.transform);
@@ -109,7 +109,7 @@ namespace VesselEncounter
                 case "Back":
                     if (m_IsBackMounted)
                     {
-                        if (m_MountedItemList[TagManager.BACK_POSITION_TAG].MountedItemPriority < (int)MountItemManager.INSTANCE.MountScriptableObject[mountID].MountPriority)
+                        if (m_MountedItemList[TagManager.BACK_POSITION_TAG].MountedItemPriority < (int)MountItemManager.Instance.MountScriptableObject[mountID].MountPriority)
                         {
                             UnMountItemOnShip(TagManager.BACK_POSITION_TAG);
                             MountItemOnShip(TagManager.BACK_POSITION_TAG, mountID, BackPosition.transform);
@@ -127,7 +127,8 @@ namespace VesselEncounter
         //Instantiates and stores it in Mounted Item List
         private void MountItemOnShip(int index, int mountID, Transform mountPosition)
         {
-            GameObject go = Instantiate(MountItemManager.INSTANCE.MountScriptableObject[mountID].MountGO,
+            GameObject go = Instantiate(MountItemManager.Instance.MountScriptableObject[mountID].MountGO,`
+
                 mountPosition.position,
                 mountPosition.rotation,//MountItemManager.INSTANCE.MountScriptableObject[mountID].MountGameObject.transform.rotation,
                 transform);
@@ -135,7 +136,7 @@ namespace VesselEncounter
             MountItemDataContainer mountItemDataContainer = new MountItemDataContainer
             {
                 MountedItem = go,
-                MountedItemPriority = (int)MountItemManager.INSTANCE.MountScriptableObject[mountID].MountPriority
+                MountedItemPriority = (int)MountItemManager.Instance.MountScriptableObject[mountID].MountPriority
             };
 
             m_MountedItemList[index] = mountItemDataContainer;

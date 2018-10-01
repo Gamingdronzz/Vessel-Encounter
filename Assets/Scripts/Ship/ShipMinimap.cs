@@ -9,7 +9,8 @@ namespace VesselEncounter
         // Use this for initialization
         private void Start()
         {
-            //Minimap.Instance.ShipTransform = transform;
+            if (GameStateManager.Instance.GetCurrentGameState() == GameStateManager.GameState.SinglePlayer)
+                Minimap.Instance.ShipTransform = transform;
         }
     }
 }

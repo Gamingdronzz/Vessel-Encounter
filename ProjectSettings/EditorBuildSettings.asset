@@ -20,7 +20,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WaitScene.unity
     guid: d4c882465af130a4e8bdc9fe7a11bc39
-  - enabled: 1
-    path: Assets/Photon/PhotonUnityNetworking/Demos/DemoAsteroids/Scenes/DemoAsteroids-GameScene.unity
-    guid: 98efc37d6307844488eb3e4247dde7e9
   m_configObjects: {}

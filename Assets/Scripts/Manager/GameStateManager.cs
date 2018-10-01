@@ -8,6 +8,7 @@ namespace VesselEncounter
     {
         public enum GameState
         {
+            SinglePlayer,
             Splash,
             MainMenu,
             WaitingScene,
