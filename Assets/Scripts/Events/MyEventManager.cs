@@ -10,7 +10,7 @@ namespace VesselEncounter
         public MyEvent OnConnectedToBestRegion = new MyEvent();
         public MyEvent OnRoomListUpdated = new MyEvent();
         public MyEvent OnConnectedToMaster = new MyEvent();
-        public MyEvent OnPlayerNameChanged = new MyEvent();
+        public MyEvent<string> OnPlayerNameChanged = new MyEvent<string>();
         public MyEvent OnGameStateUpdated = new MyEvent();
         public MyEvent OnGamePlayConditionsMet = new MyEvent();
         public MyEvent OnCreatedOrJoinedRoom = new MyEvent();

@@ -11,7 +11,7 @@ public class LocalizationTextEditor : EditorWindow {
     [MenuItem("Window/Localization Text Editor")]
     static void Init()
     {
-        EditorWindow.GetWindow(typeof(LocalizationTextEditor)).Show();
+        GetWindow(typeof(LocalizationTextEditor)).Show();
     }
 
     private void OnGUI()

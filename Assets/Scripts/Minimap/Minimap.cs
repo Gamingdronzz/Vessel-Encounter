@@ -30,12 +30,12 @@ namespace VesselEncounter
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnGameStateUpdated.EventActionVoid += OnGameStateUpdated;
+            MyEventManager.Instance.OnGameStateUpdated.AddListener(OnGameStateUpdated);
         }
 
         private void OnDisable()
         {
-            MyEventManager.Instance.OnGameStateUpdated.EventActionVoid -= OnGameStateUpdated;
+            MyEventManager.Instance.OnGameStateUpdated.RemoveListener(OnGameStateUpdated);
         }
 
         public void OnGameStateUpdated()

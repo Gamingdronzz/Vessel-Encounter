@@ -61,16 +61,16 @@ namespace VesselEncounter
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnPlayerJoined.EventActionVoid += UpdatePlayerCountAndList;
-            MyEventManager.Instance.OnPlayerLeft.EventActionVoid += UpdatePlayerCountAndList;
-            MyEventManager.Instance.OnGamePlayConditionsMet.EventActionVoid += OnGamePlayConditionsMet;
+            MyEventManager.Instance.OnPlayerJoined.AddListener(UpdatePlayerCountAndList);
+            MyEventManager.Instance.OnPlayerLeft.AddListener(UpdatePlayerCountAndList);
+            MyEventManager.Instance.OnGamePlayConditionsMet.AddListener(OnGamePlayConditionsMet);
         }
 
         private void OnDisable()
         {
-            MyEventManager.Instance.OnPlayerJoined.EventActionVoid -= UpdatePlayerCountAndList;
-            MyEventManager.Instance.OnPlayerLeft.EventActionVoid -= UpdatePlayerCountAndList;
-            MyEventManager.Instance.OnGamePlayConditionsMet.EventActionVoid -= OnGamePlayConditionsMet;
+            MyEventManager.Instance.OnPlayerJoined.RemoveListener(UpdatePlayerCountAndList);
+            MyEventManager.Instance.OnPlayerLeft.RemoveListener(UpdatePlayerCountAndList);
+            MyEventManager.Instance.OnGamePlayConditionsMet.RemoveListener(OnGamePlayConditionsMet);
         }
 
         private void OnGamePlayConditionsMet()

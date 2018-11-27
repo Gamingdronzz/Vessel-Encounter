@@ -21,15 +21,15 @@ namespace VesselEncounter
         public override void OnEnable()
         {
             base.OnEnable();
-            MyEventManager.Instance.OnGamePlayConditionsMet.EventActionVoid += OnGamePlayConditionsMet;
-            MyEventManager.Instance.OnCreatedOrJoinedRoom.EventActionVoid += OnCreatedOrJoinedRoom;
+            MyEventManager.Instance.OnGamePlayConditionsMet.AddListener(OnGamePlayConditionsMet);
+            MyEventManager.Instance.OnCreatedOrJoinedRoom.AddListener(OnCreatedOrJoinedRoom);
         }
 
         public override void OnDisable()
         {
             base.OnEnable();
-            MyEventManager.Instance.OnGamePlayConditionsMet.EventActionVoid -= OnGamePlayConditionsMet;
-            MyEventManager.Instance.OnCreatedOrJoinedRoom.EventActionVoid -= OnCreatedOrJoinedRoom;
+            MyEventManager.Instance.OnGamePlayConditionsMet.RemoveListener(OnGamePlayConditionsMet);
+            MyEventManager.Instance.OnCreatedOrJoinedRoom.RemoveListener(OnCreatedOrJoinedRoom);
         }
 
         /// <summary>
@@ -113,6 +113,14 @@ namespace VesselEncounter
             XDebug.Log("On Connected", XDebug.Mask.GameManager, null);
         }
 
+        public override void OnConnectedToMaster()
+        {
+            XDebug.Log("On Connected to master", XDebug.Mask.GameManager, null);
+            PhotonNetwork.NickName = "Player - " + UnityEngine.Random.Range(0, 9999);
+            PhotonNetwork.AutomaticallySyncScene = true;
+            MyEventManager.Instance.OnConnectedToMaster.Dispatch();
+        }
+
         public override void OnCreateRoomFailed(short returnCode, string message)
         {
             XDebug.Log("On Create Room Failed - code = " + returnCode + "\nMessage = " + message, XDebug.Mask.GameManager, XDebug.Color.Red);
@@ -165,6 +173,12 @@ namespace VesselEncounter
         public override void OnDisconnected(DisconnectCause cause)
         {
             XDebug.Log("On Disconnected " + cause.ToString(), XDebug.Mask.GameManager, XDebug.Color.Red);
+            if (NetworkData.Instance.UserChoiceRegion != null)
+            {
+                PhotonNetwork.ConnectToRegion(NetworkData.Instance.UserChoiceRegion);
+            }
+            else
+                PhotonNetwork.ConnectUsingSettings();
         }
 
         public override void OnJoinedRoom()
@@ -212,14 +226,6 @@ namespace VesselEncounter
         {
             XDebug.Log("On Player Left Room - " + otherPlayer.NickName + "\nTotal Player Count = " + PhotonNetwork.CurrentRoom.PlayerCount, XDebug.Mask.GameManager, XDebug.Color.Red);
             MyEventManager.Instance.OnPlayerLeft.Dispatch();
-        }
-
-        public override void OnConnectedToMaster()
-        {
-            XDebug.Log("On Connected to master", XDebug.Mask.GameManager, null);
-            PhotonNetwork.NickName = "Player - " + UnityEngine.Random.Range(0, 9999);
-            PhotonNetwork.AutomaticallySyncScene = true;
-            MyEventManager.Instance.OnConnectedToMaster.Dispatch();
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)

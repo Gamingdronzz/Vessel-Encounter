@@ -47,7 +47,7 @@ namespace VesselEncounter.UI.SplashScreen
         public void LoadMainMenu()
         {
             m_IsLoadingMainMenu = true;
-            SceneManager.Instance.LoadScene(SceneManager.Scene.MainMenu, UnityEngine.SceneManagement.LoadSceneMode.Single);
+            LocalizationManager.Instance.LoadLocalizedText("English.json");
         }
 
         public void LoadChangeLanguageMenu()

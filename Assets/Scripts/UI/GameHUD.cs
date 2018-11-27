@@ -38,15 +38,15 @@ namespace VesselEncounter.UI
         private void OnEnable()
         {
             //MyEventManager.Instance.OnPlayerNameChanged.EventActionString += SetPlayerName;
-            MyEventManager.Instance.OnGameStateUpdated.EventActionVoid += ListAllPlayers;
-            MyEventManager.Instance.OnPlayerLeft.EventActionVoid += ListAllPlayers;
+            MyEventManager.Instance.OnGameStateUpdated.AddListener(ListAllPlayers);
+            MyEventManager.Instance.OnPlayerLeft.AddListener(ListAllPlayers);
         }
 
         private void OnDisable()
         {
             //MyEventManager.Instance.OnPlayerNameChanged.EventActionString -= SetPlayerName;
-            MyEventManager.Instance.OnGameStateUpdated.EventActionVoid -= ListAllPlayers;
-            MyEventManager.Instance.OnPlayerLeft.EventActionVoid -= ListAllPlayers;
+            MyEventManager.Instance.OnGameStateUpdated.RemoveListener(ListAllPlayers);
+            MyEventManager.Instance.OnPlayerLeft.RemoveListener(ListAllPlayers);
         }
 
         private void ListAllPlayers()

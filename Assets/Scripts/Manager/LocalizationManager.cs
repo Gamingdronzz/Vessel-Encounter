@@ -9,16 +9,16 @@ namespace VesselEncounter
     public class LocalizationManager : SingletonMonoBehaviourPUN<LocalizationManager>
     {
         private Dictionary<string, string> localizedText;
-        private string missingTextString = "Localized text not found";
+        private string missingTextString = "Text not found";
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnLanguageChanged.EventActionVoid += OnLanguageChanged;
+            MyEventManager.Instance.OnLanguageChanged.AddListener(OnLanguageChanged);
         }
 
         private void OnDisable()
         {
-            MyEventManager.Instance.OnLanguageChanged.EventActionVoid -= OnLanguageChanged;
+            MyEventManager.Instance.OnLanguageChanged.RemoveListener(OnLanguageChanged);
         }
 
         private void OnLanguageChanged()
@@ -58,8 +58,7 @@ namespace VesselEncounter
             if (localizedText.ContainsKey(key))
             {
                 result = localizedText[key];
-            }
-
+            }            
             return result;
 
         }

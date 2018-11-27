@@ -11,6 +11,7 @@ namespace VesselEncounter
     {
         private List<Region> Regions = new List<Region>();
         public Region BestRegion;
+        public string UserChoiceRegion;
         public List<RoomInfo> RoomList { get; internal set; }
 
         public void UpdateRegionList(List<Region> regions)
@@ -29,12 +30,12 @@ namespace VesselEncounter
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnConnectedToMaster.EventActionVoid += UpdateBestRegion;
+            MyEventManager.Instance.OnConnectedToMaster.AddListener(UpdateBestRegion);
         }
 
         private void OnDisable()
         {
-            MyEventManager.Instance.OnConnectedToMaster.EventActionVoid -= UpdateBestRegion;
+            MyEventManager.Instance.OnConnectedToMaster.RemoveListener(UpdateBestRegion);
         }
 
         public List<Region> GetRegionList()
@@ -59,15 +60,18 @@ namespace VesselEncounter
 
         public void UpdateBestRegion()
         {
-            Region bestRegion = PhotonNetwork.NetworkingClient.RegionHandler.BestRegion;
-            if (bestRegion != null)
+            if (UserChoiceRegion == null)
             {
-                BestRegion = bestRegion;
-                MyEventManager.Instance.OnConnectedToBestRegion.Dispatch();
-            }
-            else
-            {
-                XDebug.Log("Null Region Received\nUnable to Update Best Region", XDebug.Mask.NetworkData, XDebug.Color.Red);
+                Region bestRegion = PhotonNetwork.NetworkingClient.RegionHandler.BestRegion;
+                if (bestRegion != null)
+                {
+                    BestRegion = bestRegion;
+                    MyEventManager.Instance.OnConnectedToBestRegion.Dispatch();
+                }
+                else
+                {
+                    XDebug.Log("Null Region Received\nUnable to Update Best Region", XDebug.Mask.NetworkData, XDebug.Color.Red);
+                }
             }
             //MainMenu.Instance.OnConnectedToBestRegion();
         }

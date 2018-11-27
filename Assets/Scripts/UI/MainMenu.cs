@@ -27,16 +27,16 @@ namespace VesselEncounter.UI.MainMenu
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnRegionListUpdated.EventActionVoid += OnRegionListUpdated;
-            MyEventManager.Instance.OnConnectedToBestRegion.EventActionVoid += OnConnectedToBestRegion;
+            MyEventManager.Instance.OnRegionListUpdated.AddListener(OnRegionListUpdated);
+            MyEventManager.Instance.OnConnectedToBestRegion.AddListener(OnConnectedToBestRegion);
         }
 
         private void OnDisable()
         {
             try
             {
-                MyEventManager.Instance.OnRegionListUpdated.EventActionVoid -= OnRegionListUpdated;
-                MyEventManager.Instance.OnConnectedToBestRegion.EventActionVoid -= OnConnectedToBestRegion;
+                MyEventManager.Instance.OnRegionListUpdated.RemoveListener(OnRegionListUpdated);
+                MyEventManager.Instance.OnConnectedToBestRegion.RemoveListener(OnConnectedToBestRegion);
             }
             catch (NullReferenceException nre)
             {
@@ -61,16 +61,16 @@ namespace VesselEncounter.UI.MainMenu
 
         private void OnRegionSelected(int index)
         {
-            string Region = NetworkData.Instance.GetRegionList()[index].Code;
-            //PhotonNetwork.Disconnect();
+            NetworkData.Instance.UserChoiceRegion = NetworkData.Instance.GetRegionList()[index].Code;
+            PhotonNetwork.Disconnect();
             //PhotonNetwork.ConnectToRegion(Region);
-            XDebug.Log("Connecting to - " + Region);
+            XDebug.Log("Connecting to - " + NetworkData.Instance.UserChoiceRegion);
         }
 
         public void StartMatchMaking()
         {
             GameData.Instance.MaxPlayers = 4;
-            GameData.Instance.MatchWaitTime = 60;
+            GameData.Instance.MatchWaitTime = 30;
             GameManager.Instance.CreateOrJoinRoom();
         }
 
