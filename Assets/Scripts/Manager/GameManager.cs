@@ -67,12 +67,10 @@ namespace VesselEncounter
                 XDebug.Log("Room Count = " + PhotonNetwork.CountOfRooms + "\nInitial Room Level = " + GameData.Instance.MinimumSkillLevel + "\nPlayer Level = " + GameData.Instance.PlayerLevel);
                 if (PhotonNetwork.CountOfRooms < MaximumRoomsUnconditionalJoin)
                 {
-                    XDebug.Log("First Condition");
                     JoinRandomRoom(false);
                 }
                 else
                 {
-                    XDebug.Log("Else Condition");
                     JoinRandomRoom(true);
                 }
             }
@@ -116,7 +114,7 @@ namespace VesselEncounter
         public override void OnConnectedToMaster()
         {
             XDebug.Log("On Connected to master", XDebug.Mask.GameManager, null);
-            PhotonNetwork.NickName = "Player - " + UnityEngine.Random.Range(0, 9999);
+            //PhotonNetwork.NickName = "Player - " + UnityEngine.Random.Range(0, 9999);
             PhotonNetwork.AutomaticallySyncScene = true;
             MyEventManager.Instance.OnConnectedToMaster.Dispatch();
         }

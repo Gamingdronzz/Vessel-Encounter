@@ -14,6 +14,8 @@ namespace VesselEncounter.UI.MainMenu
     public class MainMenu : MonoBehaviour
     {
         public TMP_Dropdown RegionListDropdown;
+        public GameObject PlayerNameInput;
+        public TMP_InputField PlayerName;
 
         public TMP_Dropdown.DropdownEvent OnDropDownValueChanged { get; private set; }
         private int index;
@@ -67,8 +69,15 @@ namespace VesselEncounter.UI.MainMenu
             XDebug.Log("Connecting to - " + NetworkData.Instance.UserChoiceRegion);
         }
 
+        public void ActivateNameInputWindow()
+        {
+            PlayerNameInput.SetActive(true);
+        }
+
         public void StartMatchMaking()
         {
+            PlayerNameInput.SetActive(false);
+            PhotonNetwork.NickName = PlayerName.text;
             GameData.Instance.MaxPlayers = 4;
             GameData.Instance.MatchWaitTime = 30;
             GameManager.Instance.CreateOrJoinRoom();
